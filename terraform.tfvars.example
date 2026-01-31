@@ -1,0 +1,52 @@
+# OCI Provider Configuration
+tenancy_ocid     = "ocid1.tenancy.oc1..example"
+user_ocid        = "ocid1.user.oc1..example"
+fingerprint      = "aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99"
+private_key_path = "~/.oci/oci_api_key.pem"
+region           = "us-ashburn-1"
+compartment_ocid = "ocid1.compartment.oc1..example"
+
+# Network Configuration
+vcn_cidr_block      = "10.0.0.0/16"
+public_subnet_cidr  = "10.0.1.0/24"
+private_subnet_cidr = "10.0.2.0/24"
+db_subnet_cidr      = "10.0.3.0/24"
+
+# Compute Configuration
+instance_shape          = "VM.Standard.E4.Flex"
+instance_ocpus          = 1
+instance_memory_in_gbs  = 8
+instance_count          = 2
+ssh_public_key          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC..."
+instance_image_ocid     = "" # Leave empty to use latest Oracle Linux 8
+availability_domain     = "ABCD:US-ASHBURN-AD-1"
+
+# Database Configuration
+adb_display_name            = "anonymouswall-adb"
+adb_db_name                 = "ANONWALLDB"
+adb_cpu_core_count          = 1
+adb_data_storage_size_in_tbs = 1
+adb_admin_password          = "ComplexPassword123!@#"
+adb_db_version              = "19c"
+adb_db_workload             = "OLTP"
+adb_license_model           = "LICENSE_INCLUDED"
+
+# Load Balancer Configuration
+lb_shape              = "flexible"
+lb_min_bandwidth_mbps = 10
+lb_max_bandwidth_mbps = 100
+
+# DNS Configuration (Optional - leave empty to skip DNS setup)
+dns_zone_name    = "" # e.g., "example.com"
+dns_record_domain = "" # e.g., "api.example.com" or leave empty to use zone_name
+
+# General Configuration
+app_name    = "anonymouswall"
+environment = "prod"
+
+# Tags
+tags = {
+  Application = "AnonymousWall"
+  ManagedBy   = "Terraform"
+  Environment = "Production"
+}
