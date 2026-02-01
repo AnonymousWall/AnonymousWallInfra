@@ -58,6 +58,8 @@ data "oci_core_vnic_attachments" "backend" {
   count          = var.instance_count
   compartment_id = var.compartment_ocid
   instance_id    = oci_core_instance.backend[count.index].id
+
+  depends_on = [oci_core_instance.backend]
 }
 
 # Secondary VNICs (optional - for high-performance networking)
