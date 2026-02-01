@@ -263,14 +263,3 @@ resource "oci_core_subnet" "db" {
   security_list_ids          = [oci_core_security_list.db.id]
   freeform_tags              = var.tags
 }
-
-# VLAN for high-performance networking (optional)
-resource "oci_core_vlan" "app_vlan" {
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.main.id
-  cidr_block     = "10.0.10.0/24"
-  display_name   = "${var.app_name}-${var.environment}-app-vlan"
-  route_table_id = oci_core_route_table.private.id
-  freeform_tags  = var.tags
-  nsg_ids        = []
-}

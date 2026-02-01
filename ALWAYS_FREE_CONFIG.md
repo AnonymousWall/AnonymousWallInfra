@@ -107,6 +107,9 @@ Update `terraform.tfvars` or your variable values:
 - For "anonymouswall", this becomes "anonymouswal" (12 chars)
 - **Recommendation**: Keep your `app_name` variable concise (≤15 characters) to avoid truncation issues
 
+**Removed Resources:**
+- VLAN resource has been removed as VLANs are not available in the Always Free tier (requires VMware SKU whitelisting)
+
 Note: The database subnet is still created but won't be used by the Autonomous Database since Always Free tier uses public endpoints only.
 
 ## Summary of Terraform Variable Updates

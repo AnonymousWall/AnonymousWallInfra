@@ -18,11 +18,6 @@ output "db_subnet_id" {
   value       = oci_core_subnet.db.id
 }
 
-output "vlan_id" {
-  description = "OCID of the VLAN"
-  value       = oci_core_vlan.app_vlan.id
-}
-
 output "internet_gateway_id" {
   description = "OCID of the internet gateway"
   value       = oci_core_internet_gateway.main.id
