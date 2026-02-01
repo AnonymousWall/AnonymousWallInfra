@@ -30,13 +30,13 @@ resource "oci_load_balancer_backend_set" "main" {
   policy           = "ROUND_ROBIN"
 
   health_checker {
-    protocol            = "HTTP"
-    port                = 8080
-    url_path            = "/health"
-    return_code         = 200
-    interval_ms         = 10000
-    timeout_in_millis   = 3000
-    retries             = 3
+    protocol          = "HTTP"
+    port              = 8080
+    url_path          = "/health"
+    return_code       = 200
+    interval_ms       = 10000
+    timeout_in_millis = 3000
+    retries           = 3
   }
 
   session_persistence_configuration {
@@ -59,9 +59,9 @@ resource "oci_load_balancer_backend" "main" {
 
 # Get VNIC details for each backend instance
 data "oci_core_vnic_attachments" "backend" {
-  count               = length(var.backend_instance_ids)
-  compartment_id      = var.compartment_ocid
-  instance_id         = var.backend_instance_ids[count.index]
+  count          = length(var.backend_instance_ids)
+  compartment_id = var.compartment_ocid
+  instance_id    = var.backend_instance_ids[count.index]
 }
 
 data "oci_core_vnic" "backend" {

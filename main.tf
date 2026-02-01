@@ -28,18 +28,18 @@ module "iam" {
 module "compute" {
   source = "./modules/compute"
 
-  compartment_ocid        = var.compartment_ocid
-  availability_domain     = var.availability_domain
-  subnet_id               = module.network.private_subnet_id
-  instance_shape          = var.instance_shape
-  instance_ocpus          = var.instance_ocpus
-  instance_memory_in_gbs  = var.instance_memory_in_gbs
-  instance_count          = var.instance_count
-  ssh_public_key          = var.ssh_public_key
-  instance_image_ocid     = var.instance_image_ocid
-  app_name                = var.app_name
-  environment             = var.environment
-  tags                    = var.tags
+  compartment_ocid       = var.compartment_ocid
+  availability_domain    = var.availability_domain
+  subnet_id              = module.network.private_subnet_id
+  instance_shape         = var.instance_shape
+  instance_ocpus         = var.instance_ocpus
+  instance_memory_in_gbs = var.instance_memory_in_gbs
+  instance_count         = var.instance_count
+  ssh_public_key         = var.ssh_public_key
+  instance_image_ocid    = var.instance_image_ocid
+  app_name               = var.app_name
+  environment            = var.environment
+  tags                   = var.tags
 }
 
 # Autonomous Database Module
@@ -77,11 +77,11 @@ module "dns" {
   source = "./modules/dns"
   count  = var.dns_zone_name != "" ? 1 : 0
 
-  compartment_ocid  = var.compartment_ocid
-  zone_name         = var.dns_zone_name
-  record_domain     = var.dns_record_domain != "" ? var.dns_record_domain : var.dns_zone_name
-  lb_ip_address     = module.load_balancer.lb_ip_address
-  app_name          = var.app_name
-  environment       = var.environment
-  tags              = var.tags
+  compartment_ocid = var.compartment_ocid
+  zone_name        = var.dns_zone_name
+  record_domain    = var.dns_record_domain != "" ? var.dns_record_domain : var.dns_zone_name
+  lb_ip_address    = module.load_balancer.lb_ip_address
+  app_name         = var.app_name
+  environment      = var.environment
+  tags             = var.tags
 }
