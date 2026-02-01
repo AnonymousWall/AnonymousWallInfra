@@ -9,6 +9,7 @@ The autonomous database module has been updated to use the Always Free tier:
 
 **Changes:**
 - Set `is_free_tier = true`
+- Set `is_mtls_connection_required = true` (required for Always Free public endpoints)
 - Removed conflicting attributes that are not compatible with Always Free:
   - `cpu_core_count` (Always Free automatically gets 1 OCPU)
   - `data_storage_size_in_tbs` (Always Free automatically gets 20 GB)
@@ -23,6 +24,7 @@ The autonomous database module has been updated to use the Always Free tier:
 - 20 GB storage per database
 - Only public endpoints (no VCN integration)
 - Maximum 30 simultaneous database sessions
+- **mTLS (mutual TLS) is required** for secure connections
 
 ### 2. Compute Instances - RECOMMENDATIONS
 
@@ -98,6 +100,11 @@ Update `terraform.tfvars` or your variable values:
 **Always Free Limits:**
 - 2 VCNs per account
 - Current configuration uses 1 VCN ✓
+
+**Important Note:**
+- VCN DNS labels must be 1-15 characters long
+- The configuration automatically truncates the DNS label to meet this requirement using: `substr(replace("${var.app_name}${var.environment}", "-", ""), 0, 15)`
+- This removes hyphens and limits to 15 characters (e.g., "anonymouswallprod" becomes "anonymouswallpr")
 
 Note: The database subnet is still created but won't be used by the Autonomous Database since Always Free tier uses public endpoints only.
 

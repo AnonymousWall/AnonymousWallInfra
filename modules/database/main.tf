@@ -8,7 +8,7 @@ resource "oci_database_autonomous_database" "main" {
   db_version                  = var.adb_db_version
   db_workload                 = var.adb_db_workload
   is_free_tier                = true
-  is_mtls_connection_required = false
+  is_mtls_connection_required = true
 
   freeform_tags = merge(var.tags, {
     Name = var.adb_display_name
