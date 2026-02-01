@@ -3,11 +3,6 @@ variable "compartment_ocid" {
   type        = string
 }
 
-variable "subnet_id" {
-  description = "OCID of the subnet for the database"
-  type        = string
-}
-
 variable "adb_display_name" {
   description = "Display name for the Autonomous Database"
   type        = string
@@ -16,16 +11,6 @@ variable "adb_display_name" {
 variable "adb_db_name" {
   description = "Database name for the Autonomous Database"
   type        = string
-}
-
-variable "adb_cpu_core_count" {
-  description = "Number of CPU cores for the ADB"
-  type        = number
-}
-
-variable "adb_data_storage_size_in_tbs" {
-  description = "Data storage size in TBs for the ADB"
-  type        = number
 }
 
 variable "adb_admin_password" {
@@ -44,11 +29,6 @@ variable "adb_db_workload" {
   type        = string
 }
 
-variable "adb_license_model" {
-  description = "License model for the ADB"
-  type        = string
-}
-
 variable "app_name" {
   description = "Application name"
   type        = string
@@ -62,4 +42,29 @@ variable "environment" {
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
+}
+
+# Optional variables - not used in Always Free tier but kept for backward compatibility
+variable "subnet_id" {
+  description = "OCID of the subnet for the database (not used in Always Free tier)"
+  type        = string
+  default     = ""
+}
+
+variable "adb_cpu_core_count" {
+  description = "Number of CPU cores for the ADB (not used in Always Free tier)"
+  type        = number
+  default     = 1
+}
+
+variable "adb_data_storage_size_in_tbs" {
+  description = "Data storage size in TBs for the ADB (not used in Always Free tier)"
+  type        = number
+  default     = 1
+}
+
+variable "adb_license_model" {
+  description = "License model for the ADB (not used in Always Free tier)"
+  type        = string
+  default     = "LICENSE_INCLUDED"
 }

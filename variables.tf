@@ -105,18 +105,6 @@ variable "adb_db_name" {
   default     = "ANONWALLDB"
 }
 
-variable "adb_cpu_core_count" {
-  description = "Number of CPU cores for the ADB"
-  type        = number
-  default     = 1
-}
-
-variable "adb_data_storage_size_in_tbs" {
-  description = "Data storage size in TBs for the ADB"
-  type        = number
-  default     = 1
-}
-
 variable "adb_admin_password" {
   description = "Admin password for the Autonomous Database"
   type        = string
@@ -135,8 +123,21 @@ variable "adb_db_workload" {
   default     = "OLTP"
 }
 
+# The following variables are not used in Always Free tier but kept for backward compatibility
+variable "adb_cpu_core_count" {
+  description = "Number of CPU cores for the ADB (Always Free tier uses 1 OCPU automatically)"
+  type        = number
+  default     = 1
+}
+
+variable "adb_data_storage_size_in_tbs" {
+  description = "Data storage size in TBs for the ADB (Always Free tier uses 20GB automatically)"
+  type        = number
+  default     = 1
+}
+
 variable "adb_license_model" {
-  description = "License model for the ADB"
+  description = "License model for the ADB (Always Free tier has a fixed license model)"
   type        = string
   default     = "LICENSE_INCLUDED"
 }

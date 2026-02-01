@@ -46,19 +46,15 @@ module "compute" {
 module "database" {
   source = "./modules/database"
 
-  compartment_ocid            = var.compartment_ocid
-  subnet_id                   = module.network.db_subnet_id
-  adb_display_name            = var.adb_display_name
-  adb_db_name                 = var.adb_db_name
-  adb_cpu_core_count          = var.adb_cpu_core_count
-  adb_data_storage_size_in_tbs = var.adb_data_storage_size_in_tbs
-  adb_admin_password          = var.adb_admin_password
-  adb_db_version              = var.adb_db_version
-  adb_db_workload             = var.adb_db_workload
-  adb_license_model           = var.adb_license_model
-  app_name                    = var.app_name
-  environment                 = var.environment
-  tags                        = var.tags
+  compartment_ocid   = var.compartment_ocid
+  adb_display_name   = var.adb_display_name
+  adb_db_name        = var.adb_db_name
+  adb_admin_password = var.adb_admin_password
+  adb_db_version     = var.adb_db_version
+  adb_db_workload    = var.adb_db_workload
+  app_name           = var.app_name
+  environment        = var.environment
+  tags               = var.tags
 }
 
 # Load Balancer Module
