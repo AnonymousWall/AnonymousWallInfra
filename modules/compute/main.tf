@@ -53,6 +53,13 @@ resource "oci_core_instance" "backend" {
   }
 }
 
+# Data source to get VNIC attachments for each instance
+data "oci_core_vnic_attachments" "backend" {
+  count          = var.instance_count
+  compartment_id = var.compartment_ocid
+  instance_id    = oci_core_instance.backend[count.index].id
+}
+
 # Secondary VNICs (optional - for high-performance networking)
 resource "oci_core_vnic_attachment" "secondary" {
   count        = var.instance_count
