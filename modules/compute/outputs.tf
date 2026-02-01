@@ -15,7 +15,7 @@ output "instance_public_ips" {
 
 output "primary_vnic_ids" {
   description = "OCIDs of the primary VNICs"
-  value       = data.oci_core_vnic_attachments.backend[*].vnic_attachments[0].vnic_id
+  value       = [for attachment in data.oci_core_vnic_attachments.backend : attachment.vnic_attachments[0].vnic_id]
 }
 
 output "secondary_vnic_ids" {
