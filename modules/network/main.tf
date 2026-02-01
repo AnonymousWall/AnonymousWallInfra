@@ -6,7 +6,7 @@ resource "oci_core_vcn" "main" {
   display_name   = "${var.app_name}-${var.environment}-vcn"
   cidr_blocks    = [var.vcn_cidr_block]
   # DNS label: max 15 chars, alphanumeric only
-  # Takes first 12 chars of app_name (removing hyphens) + first letter of environment
+  # Takes first 12 chars of app_name (removing hyphens) and converts to lowercase
   dns_label     = lower(substr(replace(var.app_name, "-", ""), 0, 12))
   freeform_tags = var.tags
 }
