@@ -102,9 +102,10 @@ Update `terraform.tfvars` or your variable values:
 - Current configuration uses 1 VCN ✓
 
 **Important Note:**
-- VCN DNS labels must be 1-15 characters long
-- The configuration automatically truncates the DNS label to meet this requirement using: `substr(replace("${var.app_name}${var.environment}", "-", ""), 0, 15)`
-- This removes hyphens and limits to 15 characters (e.g., "anonymouswallprod" becomes "anonymouswallpr")
+- VCN DNS labels must be 1-15 characters long and alphanumeric only
+- The configuration automatically generates a DNS label using the first 12 characters of the app name: `lower(substr(replace(var.app_name, "-", ""), 0, 12))`
+- For "anonymouswall", this becomes "anonymouswal" (12 chars)
+- **Recommendation**: Keep your `app_name` variable concise (≤15 characters) to avoid truncation issues
 
 Note: The database subnet is still created but won't be used by the Autonomous Database since Always Free tier uses public endpoints only.
 

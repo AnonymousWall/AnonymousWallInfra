@@ -5,8 +5,10 @@ resource "oci_core_vcn" "main" {
   compartment_id = var.compartment_ocid
   display_name   = "${var.app_name}-${var.environment}-vcn"
   cidr_blocks    = [var.vcn_cidr_block]
-  dns_label      = substr(replace("${var.app_name}${var.environment}", "-", ""), 0, 15)
-  freeform_tags  = var.tags
+  # DNS label: max 15 chars, alphanumeric only
+  # Takes first 12 chars of app_name (removing hyphens) + first letter of environment
+  dns_label     = lower(substr(replace(var.app_name, "-", ""), 0, 12))
+  freeform_tags = var.tags
 }
 
 # Internet Gateway
