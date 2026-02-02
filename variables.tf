@@ -59,7 +59,7 @@ variable "db_subnet_cidr" {
 variable "instance_shape" {
   description = "Shape of the compute instance"
   type        = string
-  default     = "VM.Standard.A1.Flex" # Always Free: Arm-based, up to 4 OCPUs and 24 GB RAM total
+  default     = "VM.Standard.E5.Flex" # Always Free: Arm-based, up to 4 OCPUs and 24 GB RAM total
 }
 
 variable "instance_ocpus" {
@@ -71,7 +71,7 @@ variable "instance_ocpus" {
 variable "instance_memory_in_gbs" {
   description = "Amount of memory in GBs for the instance"
   type        = number
-  default     = 6 # Always Free: up to 24 GB total across all instances
+  default     = 1 # Always Free: up to 24 GB total across all instances
 }
 
 variable "instance_count" {
