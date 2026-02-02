@@ -59,25 +59,25 @@ variable "db_subnet_cidr" {
 variable "instance_shape" {
   description = "Shape of the compute instance"
   type        = string
-  default     = "VM.Standard.E4.Flex"
+  default     = "VM.Standard.E5.Flex" # Always Free: Arm-based, up to 4 OCPUs and 24 GB RAM total
 }
 
 variable "instance_ocpus" {
   description = "Number of OCPUs for the instance"
   type        = number
-  default     = 1
+  default     = 1 # Always Free: up to 4 OCPUs total across all instances
 }
 
 variable "instance_memory_in_gbs" {
   description = "Amount of memory in GBs for the instance"
   type        = number
-  default     = 8
+  default     = 1 # Always Free: up to 24 GB total across all instances
 }
 
 variable "instance_count" {
   description = "Number of compute instances to create"
   type        = number
-  default     = 2
+  default     = 2 # Always Free: up to 4 instances allowed
 }
 
 variable "ssh_public_key" {
@@ -105,18 +105,6 @@ variable "adb_db_name" {
   default     = "ANONWALLDB"
 }
 
-variable "adb_cpu_core_count" {
-  description = "Number of CPU cores for the ADB"
-  type        = number
-  default     = 1
-}
-
-variable "adb_data_storage_size_in_tbs" {
-  description = "Data storage size in TBs for the ADB"
-  type        = number
-  default     = 1
-}
-
 variable "adb_admin_password" {
   description = "Admin password for the Autonomous Database"
   type        = string
@@ -135,8 +123,21 @@ variable "adb_db_workload" {
   default     = "OLTP"
 }
 
+# The following variables are not used in Always Free tier but kept for backward compatibility
+variable "adb_cpu_core_count" {
+  description = "Number of CPU cores for the ADB (Always Free tier uses 1 OCPU automatically)"
+  type        = number
+  default     = 1
+}
+
+variable "adb_data_storage_size_in_tbs" {
+  description = "Data storage size in TBs for the ADB (Always Free tier uses 20GB automatically)"
+  type        = number
+  default     = 1
+}
+
 variable "adb_license_model" {
-  description = "License model for the ADB"
+  description = "License model for the ADB (Always Free tier has a fixed license model)"
   type        = string
   default     = "LICENSE_INCLUDED"
 }
@@ -151,13 +152,13 @@ variable "lb_shape" {
 variable "lb_min_bandwidth_mbps" {
   description = "Minimum bandwidth in Mbps for flexible load balancer"
   type        = number
-  default     = 10
+  default     = 10 # Always Free: 10 Mbps fixed
 }
 
 variable "lb_max_bandwidth_mbps" {
   description = "Maximum bandwidth in Mbps for flexible load balancer"
   type        = number
-  default     = 100
+  default     = 10 # Always Free: 10 Mbps fixed (set higher for paid tier)
 }
 
 # DNS Variables

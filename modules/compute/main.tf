@@ -4,7 +4,7 @@
 data "oci_core_images" "oracle_linux" {
   compartment_id           = var.compartment_ocid
   operating_system         = "Oracle Linux"
-  operating_system_version = "8"
+  operating_system_version = "9"
   shape                    = var.instance_shape
   sort_by                  = "TIMECREATED"
   sort_order               = "DESC"
@@ -51,6 +51,15 @@ resource "oci_core_instance" "backend" {
   lifecycle {
     ignore_changes = [source_details[0].source_id]
   }
+}
+
+# Data source to get VNIC attachments for each instance
+data "oci_core_vnic_attachments" "backend" {
+  count          = var.instance_count
+  compartment_id = var.compartment_ocid
+  instance_id    = oci_core_instance.backend[count.index].id
+
+  depends_on = [oci_core_instance.backend]
 }
 
 # Secondary VNICs (optional - for high-performance networking)
