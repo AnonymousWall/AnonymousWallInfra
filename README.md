@@ -2,14 +2,28 @@
 
 Terraform configuration for deploying the AnonymousWall mobile app backend on Oracle Cloud Infrastructure (OCI).
 
+## ⚠️ Important: Database Configuration
+
+**The AnonymousWall Micronaut backend requires MySQL.** This repository provides two database options:
+
+1. **MySQL HeatWave** (Recommended) - Compatible with backend application
+   - See: [MySQL Migration Guide](MYSQL_MIGRATION_GUIDE.md)
+   - Module: `modules/mysql_heatwave/`
+
+2. **Oracle Autonomous Database** (Default, requires backend modification)
+   - Current default configuration
+   - Backend application needs Oracle JDBC driver to use this
+
+**For complete setup verification and recommendations, see:** [Backend Setup Verification](BACKEND_SETUP_VERIFICATION.md)
+
 ## Architecture Overview
 
 This Terraform configuration deploys a complete production-ready infrastructure on OCI, including:
 
-- **Networking**: VCN with public, private, and database subnets, Internet Gateway, NAT Gateway, Service Gateway, and VLANs
+- **Networking**: VCN with public, private, and database subnets, Internet Gateway, NAT Gateway, Service Gateway
 - **Compute**: Multiple backend instances with automatic scaling capabilities
 - **Bastion Host**: Jump host for secure SSH access to backend instances
-- **Database**: Autonomous Database (ADB) for data persistence
+- **Database**: MySQL HeatWave or Autonomous Database (configurable)
 - **Load Balancer**: Flexible load balancer for distributing traffic
 - **IAM**: Policies and dynamic groups for secure resource access
 - **DNS**: Optional DNS configuration for custom domain setup
@@ -25,13 +39,30 @@ Internet
     |   [Backend Instances] (Private Subnet)
     |         |
     |         v
-    |   [Autonomous Database] (Database Subnet)
+    |   [Database: MySQL or ADB] (Database Subnet)
     |
     +-- [Bastion Host] (Public Subnet)
               |
               v
         [Backend Instances] (Private Subnet)
 ```
+
+## Getting Started
+
+### 📋 Read First
+1. **[Backend Setup Verification](BACKEND_SETUP_VERIFICATION.md)** - Complete analysis of infrastructure compatibility with Micronaut backend
+2. **[MySQL Migration Guide](MYSQL_MIGRATION_GUIDE.md)** - How to use MySQL HeatWave (recommended for backend)
+3. **[Quick Start Guide](QUICKSTART.md)** - Fast deployment walkthrough
+4. **[Always Free Configuration](ALWAYS_FREE_CONFIG.md)** - Free tier setup options
+
+### 🚀 Quick Deployment
+
+For deploying with MySQL HeatWave (recommended):
+1. Follow Prerequisites below
+2. Configure credentials (step 1)
+3. Update `main.tf` to use MySQL module (see [MySQL Migration Guide](MYSQL_MIGRATION_GUIDE.md))
+4. Set MySQL variables in `terraform.tfvars`
+5. Run `terraform init && terraform apply`
 
 ## Prerequisites
 
