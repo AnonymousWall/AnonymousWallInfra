@@ -206,12 +206,12 @@ resource "oci_core_security_list" "db" {
   display_name   = "${var.app_name}-${var.environment}-db-sl"
   freeform_tags  = var.tags
 
-  # Allow inbound from private subnet on Oracle database ports (for Autonomous Database)
+  # Allow inbound from private subnet on database ports
   ingress_security_rules {
     protocol    = "6" # TCP
     source      = var.private_subnet_cidr
     stateless   = false
-    description = "Allow Oracle database access from app servers"
+    description = "Allow database access from app servers"
     tcp_options {
       min = 1521
       max = 1522
@@ -227,30 +227,6 @@ resource "oci_core_security_list" "db" {
     tcp_options {
       min = 443
       max = 443
-    }
-  }
-
-  # Allow inbound from private subnet on MySQL port (for MySQL HeatWave)
-  ingress_security_rules {
-    protocol    = "6" # TCP
-    source      = var.private_subnet_cidr
-    stateless   = false
-    description = "Allow MySQL access from app servers"
-    tcp_options {
-      min = 3306
-      max = 3306
-    }
-  }
-
-  # Allow inbound from private subnet on MySQL X Protocol port (for MySQL HeatWave)
-  ingress_security_rules {
-    protocol    = "6" # TCP
-    source      = var.private_subnet_cidr
-    stateless   = false
-    description = "Allow MySQL X Protocol from app servers"
-    tcp_options {
-      min = 33060
-      max = 33060
     }
   }
 
