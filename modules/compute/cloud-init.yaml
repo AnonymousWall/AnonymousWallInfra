@@ -18,7 +18,8 @@ runcmd:
   # Add default user to docker group
   - usermod -aG docker opc
   
-  # Configure firewall for application port
+  # Configure firewall for application and SSH ports
+  - firewall-cmd --permanent --add-service=ssh
   - firewall-cmd --permanent --add-port=8080/tcp
   - firewall-cmd --reload
   
