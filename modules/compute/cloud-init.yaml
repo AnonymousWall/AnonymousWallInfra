@@ -18,7 +18,9 @@ runcmd:
   # Add default user to docker group
   - usermod -aG docker opc
   
-  # Configure firewall for application and SSH ports
+  # Configure firewall - ensure it's running first
+  - systemctl start firewalld
+  - systemctl enable firewalld
   - firewall-cmd --permanent --add-service=ssh
   - firewall-cmd --permanent --add-port=8080/tcp
   - firewall-cmd --reload
