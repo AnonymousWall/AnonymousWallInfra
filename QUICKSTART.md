@@ -217,12 +217,12 @@ Backend instances are in a private subnet and accessible via the bastion host:
 terraform output ssh_access_instructions
 ```
 
-**Option 1: Direct SSH via Bastion (Two Steps)**
+**Option 1: SSH with Agent Forwarding (Two Steps)**
 ```bash
-# Step 1: SSH to bastion
-ssh -i ~/.ssh/oci_instance_key opc@$(terraform output -raw bastion_public_ip)
+# Step 1: SSH to bastion with agent forwarding
+ssh -A -i ~/.ssh/oci_instance_key opc@$(terraform output -raw bastion_public_ip)
 
-# Step 2: From bastion, SSH to backend
+# Step 2: From bastion, SSH to backend (key is forwarded)
 ssh opc@<backend-private-ip>
 ```
 

@@ -255,24 +255,24 @@ terraform output bastion_public_ip
 
 ### SSH Access Methods
 
-**Method 1: Direct SSH to Bastion, then to Backend**
+**Method 1: SSH with Agent Forwarding (For Interactive Use)**
 
 ```bash
-# SSH to bastion host
-ssh -i ~/.ssh/oci_instance_key opc@<bastion-public-ip>
+# SSH to bastion with agent forwarding
+ssh -A -i ~/.ssh/oci_instance_key opc@<bastion-public-ip>
 
-# From bastion, SSH to any backend instance
+# From bastion, SSH to any backend instance (key is forwarded)
 ssh opc@<backend-private-ip>
 ```
 
-**Method 2: SSH ProxyJump (One Command)**
+**Method 2: SSH ProxyJump (One Command - Best for Automation)**
 
 ```bash
-# SSH directly to backend instance via bastion
+# SSH directly to backend instance via bastion in one command
 ssh -i ~/.ssh/oci_instance_key -J opc@<bastion-public-ip> opc@<backend-private-ip>
 ```
 
-**Method 3: SSH Config File (Recommended for Frequent Use)**
+**Method 3: SSH Config File (Best for Frequent Use)**
 
 Add to `~/.ssh/config`:
 

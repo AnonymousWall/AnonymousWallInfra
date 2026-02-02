@@ -92,16 +92,14 @@ output "ssh_access_instructions" {
   value       = <<-EOT
     To SSH into backend instances via the bastion host:
     
-    1. SSH to bastion host:
-       ssh -i <your-private-key> opc@${module.bastion.bastion_public_ip}
+    Method 1: SSH with agent forwarding (recommended for manual use)
+       ssh -A -i <your-private-key> opc@${module.bastion.bastion_public_ip}
+       # Then from bastion: ssh opc@<backend-private-ip>
     
-    2. From bastion, SSH to any backend instance:
-       ssh opc@<backend-private-ip>
+    Method 2: SSH ProxyJump (one command, best for automation)
+       ssh -i <your-private-key> -J opc@${module.bastion.bastion_public_ip} opc@<backend-private-ip>
     
     Backend instance private IPs:
     ${join("\n    ", module.compute.instance_private_ips)}
-    
-    Or use SSH jump host (ProxyJump) for direct access:
-       ssh -i <your-private-key> -J opc@${module.bastion.bastion_public_ip} opc@<backend-private-ip>
   EOT
 }
