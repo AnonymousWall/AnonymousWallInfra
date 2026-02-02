@@ -35,6 +35,17 @@ output "instance_public_ips" {
   value       = module.compute.instance_public_ips
 }
 
+# Bastion Outputs
+output "bastion_id" {
+  description = "OCID of the bastion host"
+  value       = module.bastion.bastion_id
+}
+
+output "bastion_public_ip" {
+  description = "Public IP address of the bastion host"
+  value       = module.bastion.bastion_public_ip
+}
+
 # Database Outputs
 output "adb_id" {
   description = "OCID of the Autonomous Database"
@@ -73,4 +84,22 @@ output "dns_nameservers" {
 output "application_url" {
   description = "Application URL"
   value       = var.dns_zone_name != "" ? "https://${var.dns_record_domain != "" ? var.dns_record_domain : var.dns_zone_name}" : "http://${module.load_balancer.lb_ip_address}"
+}
+
+# SSH Access Instructions
+output "ssh_access_instructions" {
+  description = "Instructions for SSH access to backend instances"
+  value       = <<-EOT
+    To SSH into backend instances via the bastion host:
+    
+    Method 1: SSH with agent forwarding (recommended for manual use)
+       ssh -A -i <your-private-key> opc@${module.bastion.bastion_public_ip}
+       # Then from bastion: ssh opc@<backend-private-ip>
+    
+    Method 2: SSH ProxyJump (one command, best for automation)
+       ssh -i <your-private-key> -J opc@${module.bastion.bastion_public_ip} opc@<backend-private-ip>
+    
+    Backend instance private IPs:
+    ${join("\n    ", module.compute.instance_private_ips)}
+  EOT
 }

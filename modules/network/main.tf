@@ -127,6 +127,21 @@ resource "oci_core_security_list" "public" {
     }
   }
 
+  # Allow inbound SSH (for bastion host) from allowed CIDR blocks
+  dynamic "ingress_security_rules" {
+    for_each = var.ssh_allowed_cidrs
+    content {
+      protocol    = "6" # TCP
+      source      = ingress_security_rules.value
+      stateless   = false
+      description = "Allow SSH to bastion from ${ingress_security_rules.value}"
+      tcp_options {
+        min = 22
+        max = 22
+      }
+    }
+  }
+
   # Allow all outbound
   egress_security_rules {
     protocol    = "all"

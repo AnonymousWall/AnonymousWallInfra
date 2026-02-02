@@ -23,26 +23,33 @@ This Terraform configuration creates a complete, production-ready backend infras
    - Oracle Linux 8
    - Docker and Docker Compose pre-installed
    - Primary and secondary VNICs
+   - Deployed in private subnet (no public IPs)
 
-3. **Database Layer**
+3. **Bastion Host**
+   - Jump host for SSH access to backend instances
+   - Deployed in public subnet with public IP
+   - VM.Standard.E5.Flex shape (1 OCPU, 1GB RAM by default)
+   - Oracle Linux 9
+
+4. **Database Layer**
    - Autonomous Database (ADB)
    - OLTP workload optimized
    - 1 CPU core, 1TB storage (auto-scaling enabled)
    - Private network access only
    - Automatic backups
 
-4. **Load Balancer**
+5. **Load Balancer**
    - Flexible load balancer (10-100 Mbps)
    - Round-robin distribution
    - Health checks on backend instances
    - HTTP listener on port 80
 
-5. **IAM Security**
+6. **IAM Security**
    - Dynamic groups for compute instances
    - Policies for database, storage, monitoring
    - Least privilege access model
 
-6. **DNS (Optional)**
+7. **DNS (Optional)**
    - DNS zone management
    - A records for load balancer
    - CNAME for www subdomain
@@ -179,7 +186,9 @@ terraform output
 Important outputs:
 - `load_balancer_ip`: Your application's public IP
 - `application_url`: URL to access your app
-- `instance_private_ips`: Backend instance IPs
+- `bastion_public_ip`: Bastion host public IP for SSH access
+- `instance_private_ips`: Backend instance private IPs
+- `ssh_access_instructions`: Complete SSH access guide
 
 ## Post-Deployment
 
@@ -199,20 +208,48 @@ Important outputs:
    - Go to OCI Console → Oracle Database → Autonomous Database
    - Verify database is "Available"
 
-### Access Instances
+### Access Backend Instances
 
-Backend instances are in a private subnet. To access them:
+Backend instances are in a private subnet and accessible via the bastion host:
 
-**Option 1: Bastion Service (Recommended)**
+**Get SSH Instructions:**
 ```bash
-# Set up OCI bastion service via console
-# Then use SSH port forwarding
+terraform output ssh_access_instructions
 ```
 
-**Option 2: Jump Host**
+**Option 1: SSH with Agent Forwarding (Two Steps)**
 ```bash
-# Create a jump host in public subnet manually
-ssh -i ~/.ssh/oci_instance_key -J jumphost opc@<backend-private-ip>
+# Step 1: SSH to bastion with agent forwarding
+ssh -A -i ~/.ssh/oci_instance_key opc@$(terraform output -raw bastion_public_ip)
+
+# Step 2: From bastion, SSH to backend (key is forwarded)
+ssh opc@<backend-private-ip>
+```
+
+**Option 2: SSH ProxyJump (One Command - Recommended)**
+```bash
+# SSH directly to backend via bastion in one command
+ssh -i ~/.ssh/oci_instance_key -J opc@$(terraform output -raw bastion_public_ip) opc@<backend-private-ip>
+```
+
+**Option 3: SSH Config (Best for Frequent Use)**
+
+Add to `~/.ssh/config`:
+```
+Host bastion
+    HostName <bastion-public-ip>
+    User opc
+    IdentityFile ~/.ssh/oci_instance_key
+
+Host backend-*
+    User opc
+    IdentityFile ~/.ssh/oci_instance_key
+    ProxyJump bastion
+```
+
+Then simply:
+```bash
+ssh backend-<backend-private-ip>
 ```
 
 ### Deploy Your Application

@@ -55,6 +55,12 @@ variable "db_subnet_cidr" {
   default     = "10.0.3.0/24"
 }
 
+variable "ssh_allowed_cidrs" {
+  description = "List of CIDR blocks allowed to SSH to bastion host. Use ['0.0.0.0/0'] to allow from anywhere (not recommended for production). For better security, restrict to your IP or corporate network."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
 # Compute Variables
 variable "instance_shape" {
   description = "Shape of the compute instance"
@@ -90,6 +96,25 @@ variable "instance_image_ocid" {
   type        = string
   # Oracle Linux 8
   default = ""
+}
+
+# Bastion Variables
+variable "bastion_shape" {
+  description = "Shape of the bastion instance"
+  type        = string
+  default     = "VM.Standard.E5.Flex"
+}
+
+variable "bastion_ocpus" {
+  description = "Number of OCPUs for the bastion instance"
+  type        = number
+  default     = 1
+}
+
+variable "bastion_memory_in_gbs" {
+  description = "Amount of memory in GBs for the bastion instance"
+  type        = number
+  default     = 1
 }
 
 # Database Variables

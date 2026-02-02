@@ -16,16 +16,30 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - VLAN: For high-performance networking (`10.0.10.0/24`)
 
 **Subnets:**
-- **Public Subnet** (`10.0.1.0/24`): Hosts the load balancer
+- **Public Subnet** (`10.0.1.0/24`): Hosts the load balancer and bastion host
 - **Private Subnet** (`10.0.2.0/24`): Hosts backend compute instances
 - **Database Subnet** (`10.0.3.0/24`): Hosts the Autonomous Database
 
 **Security Lists:**
-- Public: Allows HTTP (80) and HTTPS (443) from internet
+- Public: Allows HTTP (80), HTTPS (443), and SSH (22) from internet
 - Private: Allows traffic from load balancer on port 8080, SSH from VCN
 - Database: Allows database traffic (1521-1522, 443) from private subnet
 
-### 2. Compute Instances (modules/compute)
+### 2. Bastion Host (modules/bastion)
+
+**Resources Created:**
+- Single bastion host instance in public subnet
+- Instance Shape: Flexible (default: VM.Standard.E5.Flex with 1 OCPU, 1GB RAM)
+- OS: Oracle Linux 9 (auto-selected latest image)
+- Public IP address for external SSH access
+- SSH access from internet (port 22)
+
+**Purpose:**
+- Provides secure SSH access to backend instances in private subnet
+- Jump host for administrative tasks
+- Isolated from application workload
+
+### 3. Compute Instances (modules/compute)
 
 **Resources Created:**
 - Configurable number of compute instances (default: 2)
@@ -40,7 +54,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Application directory setup (`/opt/anonymouswall`)
 - Systemd service template
 
-### 3. Autonomous Database (modules/database)
+### 4. Autonomous Database (modules/database)
 
 **Resources Created:**
 - Autonomous Database (ADB)
@@ -58,7 +72,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Private network access only
 - TLS connections supported
 
-### 4. Load Balancer (modules/load_balancer)
+### 5. Load Balancer (modules/load_balancer)
 
 **Resources Created:**
 - Flexible Load Balancer (10-100 Mbps)
@@ -76,7 +90,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Timeout: 3 seconds
 - Retries: 3
 
-### 5. IAM Policies (modules/iam)
+### 6. IAM Policies (modules/iam)
 
 **Resources Created:**
 - Dynamic Group for compute instances
@@ -92,7 +106,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Least privilege access model
 - Service-specific policies
 
-### 6. DNS (modules/dns)
+### 7. DNS (modules/dns)
 
 **Resources Created (Optional):**
 - DNS Zone (PRIMARY, GLOBAL scope)
@@ -108,20 +122,24 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 ## Network Architecture
 
 ```
-                          Internet
+                         Internet
                              |
                     [Internet Gateway]
-                             |
-                    [Load Balancer]
-                    (Public Subnet)
-                             |
-                    [NAT Gateway]
-                             |
-                [Backend Instances]
-                 (Private Subnet)
-                             |
-                [Service Gateway]
-                             |
+                        /          \
+                       /            \
+                      /              \
+             [Load Balancer]    [Bastion Host]
+              (Public Subnet)   (Public Subnet)
+                     |                 |
+                     |                 | SSH
+                     |                 |
+                     v                 v
+             [Backend Instances] <------
+              (Private Subnet)
+                     |
+             [NAT Gateway] [Service Gateway]
+                     |            |
+                     v            v
               [Autonomous Database]
                (Database Subnet)
 ```
@@ -269,6 +287,9 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 
 - `instance_count`: Number of backend instances (default: 2)
 - `instance_shape`: Compute instance shape
+- `bastion_shape`: Bastion host shape (default: VM.Standard.E5.Flex)
+- `bastion_ocpus`: Bastion host OCPUs (default: 1)
+- `bastion_memory_in_gbs`: Bastion host memory (default: 1)
 - `lb_min_bandwidth_mbps`: Minimum LB bandwidth
 - `dns_zone_name`: Custom domain (optional)
 - Network CIDR blocks
@@ -285,8 +306,9 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 
 2. **Instances:**
    - Updates via cloud-init on replacement
-   - SSH access for manual updates
-   - Use bastion host for private access
+   - SSH access to backend instances via bastion host
+   - SSH to bastion: `ssh -i <key> opc@<bastion-ip>`
+   - SSH to backend: `ssh -i <key> -J opc@<bastion-ip> opc@<backend-private-ip>`
 
 3. **Database:**
    - Automatic patching available
