@@ -127,6 +127,18 @@ resource "oci_core_security_list" "public" {
     }
   }
 
+  # Allow inbound SSH (for bastion host)
+  ingress_security_rules {
+    protocol    = "6" # TCP
+    source      = "0.0.0.0/0"
+    stateless   = false
+    description = "Allow SSH to bastion"
+    tcp_options {
+      min = 22
+      max = 22
+    }
+  }
+
   # Allow all outbound
   egress_security_rules {
     protocol    = "all"

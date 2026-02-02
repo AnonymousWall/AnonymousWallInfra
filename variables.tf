@@ -92,6 +92,25 @@ variable "instance_image_ocid" {
   default = ""
 }
 
+# Bastion Variables
+variable "bastion_shape" {
+  description = "Shape of the bastion instance"
+  type        = string
+  default     = "VM.Standard.E5.Flex"
+}
+
+variable "bastion_ocpus" {
+  description = "Number of OCPUs for the bastion instance"
+  type        = number
+  default     = 1
+}
+
+variable "bastion_memory_in_gbs" {
+  description = "Amount of memory in GBs for the bastion instance"
+  type        = number
+  default     = 1
+}
+
 # Database Variables
 variable "adb_display_name" {
   description = "Display name for the Autonomous Database"

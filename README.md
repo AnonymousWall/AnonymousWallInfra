@@ -8,6 +8,7 @@ This Terraform configuration deploys a complete production-ready infrastructure 
 
 - **Networking**: VCN with public, private, and database subnets, Internet Gateway, NAT Gateway, Service Gateway, and VLANs
 - **Compute**: Multiple backend instances with automatic scaling capabilities
+- **Bastion Host**: Jump host for secure SSH access to backend instances
 - **Database**: Autonomous Database (ADB) for data persistence
 - **Load Balancer**: Flexible load balancer for distributing traffic
 - **IAM**: Policies and dynamic groups for secure resource access
@@ -18,14 +19,18 @@ This Terraform configuration deploys a complete production-ready infrastructure 
 ```
 Internet
     |
-    v
-[Load Balancer] (Public Subnet)
+    +-- [Load Balancer] (Public Subnet)
+    |         |
+    |         v
+    |   [Backend Instances] (Private Subnet)
+    |         |
+    |         v
+    |   [Autonomous Database] (Database Subnet)
     |
-    v
-[Backend Instances] (Private Subnet)
-    |
-    v
-[Autonomous Database] (Database Subnet)
+    +-- [Bastion Host] (Public Subnet)
+              |
+              v
+        [Backend Instances] (Private Subnet)
 ```
 
 ## Prerequisites
@@ -110,6 +115,8 @@ terraform output
 Key outputs include:
 - `load_balancer_ip`: Public IP address of the load balancer
 - `application_url`: URL to access your application
+- `bastion_public_ip`: Public IP address of the bastion host for SSH access
+- `ssh_access_instructions`: Instructions for accessing backend instances
 - `adb_connection_strings`: Database connection strings (sensitive)
 
 ## Module Structure
@@ -124,6 +131,7 @@ Key outputs include:
 └── modules/
     ├── network/           # VCN, subnets, gateways, VLANs
     ├── compute/           # Compute instances with VNICs
+    ├── bastion/           # Bastion host for SSH access
     ├── database/          # Autonomous Database
     ├── load_balancer/     # Load balancer configuration
     ├── iam/               # IAM policies and dynamic groups
@@ -142,10 +150,11 @@ Key outputs include:
 
 ### Network Security
 
-- Public subnet allows inbound HTTP (80) and HTTPS (443) from internet
+- Public subnet allows inbound HTTP (80), HTTPS (443), and SSH (22) from internet
 - Private subnet only allows traffic from public subnet on port 8080
 - Database subnet only allows traffic from private subnet on database ports
-- SSH access restricted to VCN CIDR
+- SSH access to backend instances via bastion host in public subnet
+- Backend instances isolated in private subnet with no direct internet access
 
 ### IAM Policies
 
@@ -222,6 +231,67 @@ oci db autonomous-database list --compartment-id <compartment_ocid>
 - **Terraform State**: Store in OCI Object Storage with versioning
 - **Configuration**: Keep `terraform.tfvars` backed up securely
 
+## SSH Access to Backend Instances
+
+Backend instances are deployed in a private subnet for security. SSH access is provided through a bastion host in the public subnet.
+
+### Getting the Bastion IP
+
+After deployment, get the bastion host public IP:
+
+```bash
+terraform output bastion_public_ip
+```
+
+### SSH Access Methods
+
+**Method 1: Direct SSH to Bastion, then to Backend**
+
+```bash
+# SSH to bastion host
+ssh -i ~/.ssh/oci_instance_key opc@<bastion-public-ip>
+
+# From bastion, SSH to any backend instance
+ssh opc@<backend-private-ip>
+```
+
+**Method 2: SSH ProxyJump (One Command)**
+
+```bash
+# SSH directly to backend instance via bastion
+ssh -i ~/.ssh/oci_instance_key -J opc@<bastion-public-ip> opc@<backend-private-ip>
+```
+
+**Method 3: SSH Config File (Recommended for Frequent Use)**
+
+Add to `~/.ssh/config`:
+
+```
+Host bastion
+    HostName <bastion-public-ip>
+    User opc
+    IdentityFile ~/.ssh/oci_instance_key
+
+Host backend-*
+    User opc
+    IdentityFile ~/.ssh/oci_instance_key
+    ProxyJump bastion
+```
+
+Then connect simply:
+
+```bash
+ssh backend-<backend-private-ip>
+```
+
+### View SSH Instructions
+
+Get complete SSH access instructions with backend IPs:
+
+```bash
+terraform output ssh_access_instructions
+```
+
 ## Cleanup
 
 To destroy all resources:
@@ -254,7 +324,11 @@ terraform destroy
 - Ensure service limits are not exceeded
 
 **Issue**: Cannot connect to instances
-- Verify security list rules
+- Backend instances are in a private subnet and only accessible via the bastion host
+- Use the bastion host public IP to connect: `ssh -i <key> opc@<bastion-ip>`
+- From bastion, SSH to backend instances using their private IPs
+- Alternatively, use SSH ProxyJump: `ssh -i <key> -J opc@<bastion-ip> opc@<backend-private-ip>`
+- Verify security list rules allow SSH from bastion to backend instances
 - Check NAT gateway is configured
 - Ensure SSH key is correct
 
