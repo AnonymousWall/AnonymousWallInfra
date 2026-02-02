@@ -12,6 +12,14 @@ public_subnet_cidr  = "10.0.1.0/24"
 private_subnet_cidr = "10.0.2.0/24"
 db_subnet_cidr      = "10.0.3.0/24"
 
+# SSH Access Configuration
+# SECURITY: Restrict SSH access to bastion host to specific IPs for production
+# Examples:
+# - Your IP: ["1.2.3.4/32"]
+# - Corporate network: ["10.20.0.0/16", "192.168.1.0/24"]
+# - Any IP (NOT recommended for production): ["0.0.0.0/0"]
+ssh_allowed_cidrs = ["0.0.0.0/0"]  # Change this to your IP or network for better security
+
 # Compute Configuration (Always Free Compatible - Arm-based)
 # For Always Free: Use VM.Standard.A1.Flex with up to 4 OCPUs and 24 GB RAM total across all instances
 # Alternative: VM.Standard.E2.1.Micro (AMD, 1 OCPU, 1 GB RAM, max 2 instances)

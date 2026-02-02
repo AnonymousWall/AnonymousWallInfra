@@ -9,6 +9,7 @@ module "network" {
   public_subnet_cidr  = var.public_subnet_cidr
   private_subnet_cidr = var.private_subnet_cidr
   db_subnet_cidr      = var.db_subnet_cidr
+  ssh_allowed_cidrs   = var.ssh_allowed_cidrs
   app_name            = var.app_name
   environment         = var.environment
   tags                = var.tags

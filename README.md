@@ -150,10 +150,11 @@ Key outputs include:
 
 ### Network Security
 
-- Public subnet allows inbound HTTP (80), HTTPS (443), and SSH (22) from internet
+- Public subnet allows inbound HTTP (80), HTTPS (443), and SSH (22)
+- SSH access to bastion can be restricted to specific CIDR blocks via `ssh_allowed_cidrs` variable
 - Private subnet only allows traffic from public subnet on port 8080
 - Database subnet only allows traffic from private subnet on database ports
-- SSH access to backend instances via bastion host in public subnet
+- SSH access to backend instances via bastion host in public subnet only
 - Backend instances isolated in private subnet with no direct internet access
 
 ### IAM Policies
@@ -234,6 +235,15 @@ oci db autonomous-database list --compartment-id <compartment_ocid>
 ## SSH Access to Backend Instances
 
 Backend instances are deployed in a private subnet for security. SSH access is provided through a bastion host in the public subnet.
+
+### Security Configuration
+
+By default, SSH access to the bastion host is allowed from any IP (`0.0.0.0/0`). **For production environments**, restrict this to specific IP addresses or CIDR blocks:
+
+```hcl
+# In terraform.tfvars
+ssh_allowed_cidrs = ["1.2.3.4/32", "10.20.0.0/16"]  # Your IP(s)
+```
 
 ### Getting the Bastion IP
 
