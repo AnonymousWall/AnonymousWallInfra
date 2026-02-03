@@ -1,4 +1,8 @@
 #cloud-config
+
+# Enable detailed logging for cloud-init debugging
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
+
 package_update: true
 package_upgrade: true
 
@@ -11,6 +15,20 @@ packages:
   - vim
 
 runcmd:
+  # Log network connectivity for debugging
+  - echo "=== Cloud-init network debug ===" | tee -a /var/log/cloud-init-debug.log
+  - date | tee -a /var/log/cloud-init-debug.log
+  - echo "Checking network connectivity..." | tee -a /var/log/cloud-init-debug.log
+  - ip addr show | tee -a /var/log/cloud-init-debug.log
+  - ip route show | tee -a /var/log/cloud-init-debug.log
+  - cat /etc/resolv.conf | tee -a /var/log/cloud-init-debug.log
+  - ping -c 3 8.8.8.8 | tee -a /var/log/cloud-init-debug.log || echo "Ping to 8.8.8.8 failed" | tee -a /var/log/cloud-init-debug.log
+  - ping -c 3 oracle.com | tee -a /var/log/cloud-init-debug.log || echo "Ping to oracle.com failed" | tee -a /var/log/cloud-init-debug.log
+  - curl -I https://yum.oracle.com 2>&1 | tee -a /var/log/cloud-init-debug.log || echo "Curl to yum.oracle.com failed" | tee -a /var/log/cloud-init-debug.log
+  - echo "Checking yum configuration..." | tee -a /var/log/cloud-init-debug.log
+  - yum repolist 2>&1 | tee -a /var/log/cloud-init-debug.log
+  - echo "=== End network debug ===" | tee -a /var/log/cloud-init-debug.log
+  
   # Start and enable Podman socket (for compatibility with docker-compose tools)
   - systemctl start podman.socket
   - systemctl enable podman.socket
