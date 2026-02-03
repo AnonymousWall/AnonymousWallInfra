@@ -1,11 +1,55 @@
 #cloud-config
 # Minimal cloud-init for bastion - ensures SSH access works
 
+write_files:
+  - path: /home/opc/setup-backend-access.sh
+    permissions: '0755'
+    owner: opc:opc
+    content: |
+      #!/bin/bash
+      # Helper script to enable SSH from bastion to backend instances
+      
+      echo "==================================="
+      echo "Bastion to Backend SSH Setup"
+      echo "==================================="
+      echo ""
+      echo "This bastion has an SSH key that needs to be added to backend instances."
+      echo ""
+      echo "Your bastion's public key is:"
+      echo ""
+      cat /home/opc/.ssh/id_ed25519.pub
+      echo ""
+      echo "To enable SSH from bastion to backend instances:"
+      echo "1. Copy the public key above"
+      echo "2. SSH to each backend instance using agent forwarding:"
+      echo "   ssh -A opc@<backend-ip>"
+      echo "3. Add the key to ~/.ssh/authorized_keys on each backend"
+      echo ""
+      echo "OR for automated setup, contact your administrator to add"
+      echo "the bastion's public key to the Terraform configuration."
+      echo ""
+
 runcmd:
+  # Generate SSH key for opc user to access backend instances
+  - sudo -u opc ssh-keygen -t ed25519 -f /home/opc/.ssh/id_ed25519 -N '' -C "bastion-to-backend"
+  
   # Ensure firewall allows SSH
   - systemctl start firewalld || true
   - systemctl enable firewalld || true
   - firewall-cmd --permanent --add-service=ssh || true
   - firewall-cmd --reload || true
+  
+  # Create a message of the day showing how to access backends
+  - echo "" >> /etc/motd
+  - echo "==================================================" >> /etc/motd
+  - echo "Bastion Host - Jump Server" >> /etc/motd
+  - echo "==================================================" >> /etc/motd
+  - echo "" >> /etc/motd
+  - echo "To access backend instances from this bastion:" >> /etc/motd
+  - echo "  Run: ./setup-backend-access.sh" >> /etc/motd
+  - echo "" >> /etc/motd
+  - echo "Your SSH public key for backend access:" >> /etc/motd
+  - cat /home/opc/.ssh/id_ed25519.pub >> /etc/motd
+  - echo "" >> /etc/motd
 
 final_message: "Bastion host is ready for SSH access"
