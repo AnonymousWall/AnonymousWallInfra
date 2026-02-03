@@ -14,6 +14,10 @@ This Terraform configuration deploys a complete production-ready infrastructure 
 - **IAM**: Policies and dynamic groups for secure resource access
 - **DNS**: Optional DNS configuration for custom domain setup
 
+### Container Runtime
+
+Backend instances use **Podman** as the container runtime. Oracle Linux 9 does not include Docker in its default repositories, and Oracle promotes Podman as an OCI-compliant alternative. Podman is fully compatible with Docker commands and Compose files, providing a drop-in replacement for Docker workflows.
+
 ## Architecture Diagram
 
 ```

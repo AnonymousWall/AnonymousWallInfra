@@ -49,7 +49,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Secondary VNICs: For high-performance networking (optional)
 
 **Cloud-Init Configuration:**
-- Docker and Docker Compose installation
+- Podman and Podman Compose installation
 - Firewall configuration for port 8080
 - Application directory setup (`/opt/anonymouswall`)
 - Systemd service template
