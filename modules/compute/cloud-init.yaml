@@ -11,6 +11,7 @@ packages:
 
 runcmd:
   # Add Docker's official repository for Oracle Linux
+  # Note: Using CentOS repository as it's compatible with Oracle Linux (RHEL-based)
   - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   
   # Install Docker CE and related packages
