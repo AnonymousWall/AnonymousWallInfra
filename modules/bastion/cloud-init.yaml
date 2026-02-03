@@ -1,0 +1,11 @@
+#cloud-config
+# Minimal cloud-init for bastion - ensures SSH access works
+
+runcmd:
+  # Ensure firewall allows SSH
+  - systemctl start firewalld || true
+  - systemctl enable firewalld || true
+  - firewall-cmd --permanent --add-service=ssh || true
+  - firewall-cmd --reload || true
+
+final_message: "Bastion host is ready for SSH access"
