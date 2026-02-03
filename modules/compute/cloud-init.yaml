@@ -8,15 +8,15 @@ packages:
   - curl
   - wget
   - vim
-  - python-pip
+  - python3-pip
 
 runcmd:
   # Start and enable Docker
   - systemctl start docker
   - systemctl enable docker
   
-  # Install docker-compose via pip for OL7 compatibility
-  - pip install docker-compose
+  # Install docker-compose via pip3 for OL7 compatibility
+  - pip3 install docker-compose
   
   # Add default user to docker group
   - usermod -aG docker opc
