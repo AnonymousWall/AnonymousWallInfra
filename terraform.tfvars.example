@@ -23,9 +23,10 @@ ssh_allowed_cidrs = ["0.0.0.0/0"]  # Change this to your IP or network for bette
 # Compute Configuration (Always Free Compatible - Arm-based)
 # For Always Free: Use VM.Standard.A1.Flex with up to 4 OCPUs and 24 GB RAM total across all instances
 # Alternative: VM.Standard.E2.1.Micro (AMD, 1 OCPU, 1 GB RAM, max 2 instances)
+# Note: Backend instances use Oracle Linux 9 with Podman (OL9 standard container runtime)
 instance_shape          = "VM.Standard.A1.Flex"  # Arm-based Always Free shape
-instance_ocpus          = 1  # 1 OCPU per instance (max 4 total)
-instance_memory_in_gbs  = 6  # 6 GB per instance (max 24 GB total)
+instance_ocpus          = 2  # 2 OCPUs per instance for better performance
+instance_memory_in_gbs  = 8  # 8 GB per instance for better performance
 instance_count          = 2  # Up to 4 instances allowed
 ssh_public_key          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC..."
 instance_image_ocid     = "" # Leave empty to use latest Oracle Linux 8 (Arm-compatible)

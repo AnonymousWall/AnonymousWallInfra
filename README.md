@@ -190,9 +190,9 @@ instance_count = 4  # Scale to 4 instances
 Update `instance_shape`, `instance_ocpus`, and `instance_memory_in_gbs`:
 
 ```hcl
-instance_shape         = "VM.Standard.E4.Flex"
+instance_shape         = "VM.Standard.E5.Flex"
 instance_ocpus         = 2
-instance_memory_in_gbs = 16
+instance_memory_in_gbs = 8
 ```
 
 ### Adding SSL/TLS

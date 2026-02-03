@@ -43,13 +43,13 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 
 **Resources Created:**
 - Configurable number of compute instances (default: 2)
-- Instance Shape: Flexible (default: VM.Standard.E4.Flex with 1 OCPU, 8GB RAM)
-- OS: Oracle Linux 8 (auto-selected latest image)
+- Instance Shape: Flexible (default: VM.Standard.E5.Flex with 2 OCPUs, 8GB RAM)
+- OS: Oracle Linux 9 (auto-selected latest image)
 - Primary VNICs: For network connectivity
 - Secondary VNICs: For high-performance networking (optional)
 
 **Cloud-Init Configuration:**
-- Docker and Docker Compose installation
+- Podman and Podman Compose installation (OL9 uses Podman instead of Docker)
 - Firewall configuration for port 8080
 - Application directory setup (`/opt/anonymouswall`)
 - Systemd service template

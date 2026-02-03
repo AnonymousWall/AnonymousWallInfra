@@ -71,13 +71,13 @@ variable "instance_shape" {
 variable "instance_ocpus" {
   description = "Number of OCPUs for the instance"
   type        = number
-  default     = 1 # Always Free: up to 4 OCPUs total across all instances
+  default     = 2 # 2 OCPUs per instance for better performance
 }
 
 variable "instance_memory_in_gbs" {
   description = "Amount of memory in GBs for the instance"
   type        = number
-  default     = 1 # Always Free: up to 24 GB total across all instances
+  default     = 8 # 8 GB per instance for better performance
 }
 
 variable "instance_count" {
