@@ -259,12 +259,20 @@ ssh backend-<backend-private-ip>
    ssh -i ~/.ssh/oci_instance_key opc@<instance-ip>
    ```
 
-2. **Navigate to app directory:**
+2. **Verify Docker is installed:**
+   ```bash
+   docker --version
+   docker compose version
+   ```
+   
+   **⚠️ If Docker is not found**: See [DOCKER_INSTALLATION_FIX.md](DOCKER_INSTALLATION_FIX.md) for solutions.
+
+3. **Navigate to app directory:**
    ```bash
    cd /opt/anonymouswall
    ```
 
-3. **Create docker-compose.yml:**
+4. **Create docker-compose.yml:**
    ```yaml
    version: '3.8'
    services:
@@ -276,7 +284,7 @@ ssh backend-<backend-private-ip>
          - DB_CONNECTION_STRING=<from terraform output>
    ```
 
-4. **Start application:**
+5. **Start application:**
    ```bash
    docker compose up -d
    ```

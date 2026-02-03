@@ -342,6 +342,12 @@ terraform destroy
 - Check NAT gateway is configured
 - Ensure SSH key is correct
 
+**Issue**: Docker not found on existing instances
+- See [DOCKER_INSTALLATION_FIX.md](DOCKER_INSTALLATION_FIX.md) for solutions
+- Option 1: Manually install Docker on existing instances
+- Option 2: Re-provision instances with Terraform (recommended)
+- Cloud-init only runs during instance creation, so existing instances need manual fixes or re-provisioning
+
 ### Getting Help
 
 - [OCI Documentation](https://docs.oracle.com/en-us/iaas/Content/home.htm)
