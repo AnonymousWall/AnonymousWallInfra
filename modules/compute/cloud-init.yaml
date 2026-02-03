@@ -4,19 +4,16 @@ package_upgrade: true
 
 packages:
   - docker
+  - docker-compose
   - git
   - curl
   - wget
   - vim
-  - python3-pip
 
 runcmd:
   # Start and enable Docker
   - systemctl start docker
   - systemctl enable docker
-  
-  # Install docker-compose via pip3 for OL7 compatibility
-  - pip3 install docker-compose
   
   # Add default user to docker group
   - usermod -aG docker opc

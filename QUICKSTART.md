@@ -20,7 +20,7 @@ This Terraform configuration creates a complete, production-ready backend infras
 2. **Compute Layer**
    - 2 backend instances (configurable)
    - VM.Standard.E4.Flex shape (1 OCPU, 8GB RAM by default)
-   - Oracle Linux 7
+   - Oracle Linux 8
    - Docker and Docker Compose pre-installed
    - Primary and secondary VNICs
    - Deployed in private subnet (no public IPs)
@@ -29,7 +29,7 @@ This Terraform configuration creates a complete, production-ready backend infras
    - Jump host for SSH access to backend instances
    - Deployed in public subnet with public IP
    - VM.Standard.E5.Flex shape (1 OCPU, 1GB RAM by default)
-   - Oracle Linux 7
+   - Oracle Linux 8
 
 4. **Database Layer**
    - Autonomous Database (ADB)

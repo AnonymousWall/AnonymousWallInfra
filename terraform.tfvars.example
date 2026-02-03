@@ -28,7 +28,7 @@ instance_ocpus          = 1  # 1 OCPU per instance (max 4 total)
 instance_memory_in_gbs  = 6  # 6 GB per instance (max 24 GB total)
 instance_count          = 2  # Up to 4 instances allowed
 ssh_public_key          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC..."
-instance_image_ocid     = "" # Leave empty to use latest Oracle Linux 7 (Arm-compatible)
+instance_image_ocid     = "" # Leave empty to use latest Oracle Linux 8 (Arm-compatible)
 availability_domain     = "ABCD:US-ASHBURN-AD-1"
 
 # Bastion Configuration (Always Free Compatible)
