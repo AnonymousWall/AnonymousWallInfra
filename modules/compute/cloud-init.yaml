@@ -14,6 +14,9 @@ runcmd:
   # Note: Using CentOS repository as it's compatible with Oracle Linux (RHEL-based)
   - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   
+  # Remove conflicting packages (Oracle Linux 9 comes with Podman by default)
+  - dnf remove -y docker docker-* podman buildah runc || true
+  
   # Install Docker CE and related packages
   - dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
   
