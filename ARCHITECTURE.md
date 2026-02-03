@@ -30,7 +30,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 **Resources Created:**
 - Single bastion host instance in public subnet
 - Instance Shape: Flexible (default: VM.Standard.E5.Flex with 1 OCPU, 1GB RAM)
-- OS: Oracle Linux 9 (auto-selected latest image)
+- OS: Oracle Linux 7 (auto-selected latest image)
 - Public IP address for external SSH access
 - SSH access from internet (port 22)
 
@@ -44,7 +44,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 **Resources Created:**
 - Configurable number of compute instances (default: 2)
 - Instance Shape: Flexible (default: VM.Standard.E4.Flex with 1 OCPU, 8GB RAM)
-- OS: Oracle Linux 8 (auto-selected latest image)
+- OS: Oracle Linux 7 (auto-selected latest image)
 - Primary VNICs: For network connectivity
 - Secondary VNICs: For high-performance networking (optional)
 

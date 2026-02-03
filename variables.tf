@@ -94,7 +94,7 @@ variable "ssh_public_key" {
 variable "instance_image_ocid" {
   description = "OCID of the instance image (OS)"
   type        = string
-  # Oracle Linux 8
+  # Oracle Linux 7
   default = ""
 }
 

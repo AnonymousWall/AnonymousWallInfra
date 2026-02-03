@@ -29,7 +29,7 @@ This Terraform configuration creates a complete, production-ready backend infras
    - Jump host for SSH access to backend instances
    - Deployed in public subnet with public IP
    - VM.Standard.E5.Flex shape (1 OCPU, 1GB RAM by default)
-   - Oracle Linux 9
+   - Oracle Linux 7
 
 4. **Database Layer**
    - Autonomous Database (ADB)
