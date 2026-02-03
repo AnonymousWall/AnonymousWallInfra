@@ -3,14 +3,19 @@ package_update: true
 package_upgrade: true
 
 packages:
-  - docker
-  - docker-compose
+  - yum-utils
   - git
   - curl
   - wget
   - vim
 
 runcmd:
+  # Add Docker's official repository for Oracle Linux
+  - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  
+  # Install Docker CE and related packages
+  - dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  
   # Start and enable Docker
   - systemctl start docker
   - systemctl enable docker
@@ -41,8 +46,8 @@ write_files:
       Type=oneshot
       RemainAfterExit=yes
       WorkingDirectory=/opt/${app_name}
-      ExecStart=/usr/bin/docker-compose up -d
-      ExecStop=/usr/bin/docker-compose down
+      ExecStart=/usr/bin/docker compose up -d
+      ExecStop=/usr/bin/docker compose down
 
       [Install]
       WantedBy=multi-user.target

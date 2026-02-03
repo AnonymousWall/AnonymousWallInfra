@@ -20,8 +20,8 @@ This Terraform configuration creates a complete, production-ready backend infras
 2. **Compute Layer**
    - 2 backend instances (configurable)
    - VM.Standard.E4.Flex shape (1 OCPU, 8GB RAM by default)
-   - Oracle Linux 8
-   - Docker and Docker Compose pre-installed
+   - Oracle Linux 9
+   - Docker CE and Docker Compose v2 pre-installed
    - Primary and secondary VNICs
    - Deployed in private subnet (no public IPs)
 
@@ -278,7 +278,7 @@ ssh backend-<backend-private-ip>
 
 4. **Start application:**
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 ## Configuration Options
