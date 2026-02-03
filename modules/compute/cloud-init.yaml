@@ -8,9 +8,12 @@ packages:
   - wget
   - vim
   - yum-utils
+  - gnupg2
 
 runcmd:
   # Install Docker CE from Docker repository (Oracle Linux 9 compatible)
+  # Add Docker GPG key for package verification
+  - curl -fsSL https://download.docker.com/linux/centos/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
   - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
   - yum install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
   
