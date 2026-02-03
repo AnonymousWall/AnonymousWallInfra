@@ -50,7 +50,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Secondary VNICs: For high-performance networking (optional)
 
 **Cloud-Init Configuration:**
-- Docker and Docker Compose installation (via Docker CE repository)
+- Docker and Docker Compose installation (via get.docker.com convenience script)
 - Firewall configuration for port 8080
 - Application directory setup (`/opt/anonymouswall`)
 - Systemd service template

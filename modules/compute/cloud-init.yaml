@@ -9,21 +9,22 @@ packages:
   - vim
 
 runcmd:
-  # Install Docker on Oracle Linux 8
-  - dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  - dnf install -y docker-ce docker-ce-cli containerd.io
+  # Install Docker using official convenience script for Oracle Linux 8
+  - curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+  - sh /tmp/get-docker.sh
+  - rm /tmp/get-docker.sh
   
   # Start and enable Docker
   - systemctl start docker
   - systemctl enable docker
   
+  # Add default user to docker group
+  - usermod -aG docker opc
+  
   # Install docker-compose
   - curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   - chmod +x /usr/local/bin/docker-compose
   - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-  
-  # Add default user to docker group
-  - usermod -aG docker opc
   
   # Configure firewall - ensure it's running first
   - systemctl start firewalld
