@@ -34,6 +34,10 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Public IP address for external SSH access
 - SSH access from internet (port 22)
 
+**Cloud-Init Configuration:**
+- Docker and Docker Compose installation
+- Firewall configuration
+
 **Purpose:**
 - Provides secure SSH access to backend instances in private subnet
 - Jump host for administrative tasks
@@ -49,7 +53,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Secondary VNICs: For high-performance networking (optional)
 
 **Cloud-Init Configuration:**
-- Docker and Docker Compose installation
+- Docker and Docker Compose installation (via Docker CE repository)
 - Firewall configuration for port 8080
 - Application directory setup (`/opt/anonymouswall`)
 - Systemd service template
