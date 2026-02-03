@@ -20,7 +20,7 @@ This Terraform configuration creates a complete, production-ready backend infras
 2. **Compute Layer**
    - 2 backend instances (configurable)
    - VM.Standard.E4.Flex shape (1 OCPU, 8GB RAM by default)
-   - Oracle Linux 8
+   - Oracle Linux 7
    - Docker and Docker Compose pre-installed
    - Primary and secondary VNICs
    - Deployed in private subnet (no public IPs)
