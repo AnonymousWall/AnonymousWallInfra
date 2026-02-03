@@ -15,9 +15,6 @@ runcmd:
   - systemctl start podman.socket
   - systemctl enable podman.socket
   
-  # Enable podman socket for rootless containers
-  - loginctl enable-linger opc
-  
   # Configure firewall - ensure it's running first
   - systemctl start firewalld
   - systemctl enable firewalld
