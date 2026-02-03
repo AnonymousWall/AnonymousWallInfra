@@ -92,14 +92,25 @@ output "ssh_access_instructions" {
   value       = <<-EOT
     To SSH into backend instances via the bastion host:
     
-    Method 1: SSH with agent forwarding (recommended for manual use)
+    Method 1: Agent Forwarding (Traditional)
        ssh -A -i <your-private-key> opc@${module.bastion.bastion_public_ip}
        # Then from bastion: ssh opc@<backend-private-ip>
     
-    Method 2: SSH ProxyJump (one command, best for automation)
+    Method 2: Direct SSH (Recommended - One-time Setup Required)
+       # Run this once after deployment:
+       ./scripts/setup-bastion-keys.sh
+       
+       # Then SSH without agent forwarding:
+       ssh -i <your-private-key> opc@${module.bastion.bastion_public_ip}
+       ssh opc@<backend-private-ip>
+    
+    Method 3: ProxyJump (One Command)
        ssh -i <your-private-key> -J opc@${module.bastion.bastion_public_ip} opc@<backend-private-ip>
     
     Backend instance private IPs:
     ${join("\n    ", module.compute.instance_private_ips)}
+    
+    Note: The bastion automatically generates an SSH key during initialization.
+    Run ./scripts/setup-bastion-keys.sh to distribute it to backend instances.
   EOT
 }
