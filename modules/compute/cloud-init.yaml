@@ -1,6 +1,7 @@
 #cloud-config
 package_update: true
-package_upgrade: true
+# package_upgrade removed to allow faster boot and SSH access
+# Upgrades can be done manually if needed after deployment
 
 packages:
   - git
