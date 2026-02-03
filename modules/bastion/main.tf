@@ -38,7 +38,6 @@ resource "oci_core_instance" "bastion" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = base64encode(file("${path.module}/cloud-init.yaml"))
   }
 
   freeform_tags = merge(var.tags, {
