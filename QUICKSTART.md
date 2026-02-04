@@ -378,6 +378,8 @@ Get image OCID from: Compute → Images → Oracle Images
 - Verify security list rules
 - Check database status in console
 - Ensure instances are in same VCN
+- Verify NAT Gateway IP is whitelisted in the database ACL (automatically configured)
+- Check database wallet is properly configured on backend instances
 
 ## Cleanup
 

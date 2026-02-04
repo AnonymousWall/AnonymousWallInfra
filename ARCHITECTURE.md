@@ -63,14 +63,15 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Storage: 1 TB (default)
 - Version: 19c (default)
 - License Model: LICENSE_INCLUDED
-- Network: Private subnet access only
+- Network: Public endpoint with IP whitelisting
 - Wallet: For secure connections
 
 **Features:**
 - Auto-scaling enabled
 - Automatic backups
-- Private network access only
+- IP whitelisting for secure access (NAT Gateway IP automatically whitelisted)
 - TLS connections supported
+- Always Free tier compatible
 
 ### 5. Load Balancer (modules/load_balancer)
 
