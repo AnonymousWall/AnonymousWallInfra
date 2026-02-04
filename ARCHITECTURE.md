@@ -18,12 +18,12 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 **Subnets:**
 - **Public Subnet** (`10.0.1.0/24`): Hosts the load balancer and bastion host
 - **Private Subnet** (`10.0.2.0/24`): Hosts backend compute instances
-- **Database Subnet** (`10.0.3.0/24`): Hosts the Autonomous Database
+- **Database Subnet** (`10.0.3.0/24`): Hosts the MySQL Database System
 
 **Security Lists:**
 - Public: Allows HTTP (80), HTTPS (443), and SSH (22) from internet
 - Private: Allows traffic from load balancer on port 8080, SSH from VCN
-- Database: Allows database traffic (1521-1522, 443) from private subnet
+- Database: Allows database traffic (3306, 33060) from private subnet
 
 ### 2. Bastion Host (modules/bastion)
 
@@ -54,20 +54,18 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Application directory setup (`/opt/anonymouswall`)
 - Systemd service template
 
-### 4. Autonomous Database (modules/database)
+### 4. MySQL Database System (modules/database)
 
 **Resources Created:**
-- Autonomous Database (ADB)
-- Database Workload: OLTP (default)
-- CPU Cores: 1 (default, auto-scaling enabled)
-- Storage: 1 TB (default)
-- Version: 19c (default)
-- License Model: LICENSE_INCLUDED
+- MySQL Database System
+- Database Configuration: Standalone (default)
+- CPU Cores: 1 (default)
+- Storage: 50 GB (default)
+- Version: 8.0 (default)
 - Network: Private subnet access only
-- Wallet: For secure connections
 
 **Features:**
-- Auto-scaling enabled
+- High availability configuration available
 - Automatic backups
 - Private network access only
 - TLS connections supported
@@ -96,7 +94,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Dynamic Group for compute instances
 - Policies for:
   - Object Storage access
-  - Autonomous Database access
+  - MySQL Database access
   - Load balancer operations
   - Monitoring and logging
   - Secrets management
@@ -140,7 +138,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
              [NAT Gateway] [Service Gateway]
                      |            |
                      v            v
-              [Autonomous Database]
+              [MySQL Database System]
                (Database Subnet)
 ```
 
@@ -179,7 +177,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
    - Private network only
    - TLS encryption in transit
    - Automatic backups
-   - Wallet-based authentication
+   - Password-based authentication
 
 2. **Secrets:**
    - OCI Vault integration ready
@@ -194,7 +192,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
    - Automatic failover
 
 2. **Database:**
-   - Autonomous Database (ADB) provides built-in HA
+   - MySQL Database System provides built-in HA
    - Automatic backups
    - Point-in-time recovery
 
@@ -211,7 +209,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 
 2. **Vertical Scaling:**
    - Adjust instance shape (OCPUs, memory)
-   - Database auto-scaling enabled
+   - Database can be scaled up/down
 
 3. **Network Scaling:**
    - Flexible load balancer bandwidth (10-100 Mbps)
@@ -239,8 +237,8 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
    - Pay only for allocated resources
    - Easy to scale up/down
 
-2. **Auto-Scaling:**
-   - Database auto-scaling enabled
+2. **Resource Optimization:**
+   - Right-size database configuration
    - Adjust resources based on demand
 
 3. **License Model:**
@@ -281,7 +279,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - `compartment_ocid`: Target compartment
 - `ssh_public_key`: SSH key for instance access
 - `availability_domain`: Target availability domain
-- `adb_admin_password`: Database admin password
+- `mysql_admin_password`: Database admin password
 
 ### Optional Variables
 
@@ -317,7 +315,7 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 ### Backups
 
 1. **Database:**
-   - Automatic daily backups (ADB)
+   - Automatic daily backups (MySQL)
    - Retention configurable
 
 2. **Terraform State:**
