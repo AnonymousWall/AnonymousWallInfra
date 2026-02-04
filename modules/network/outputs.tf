@@ -29,8 +29,8 @@ output "nat_gateway_id" {
 }
 
 output "nat_gateway_public_ip" {
-  description = "Public IP address of the NAT gateway"
-  value       = data.oci_core_nat_gateway.main.nat_ip
+  description = "Public IP address of the NAT gateway in CIDR /32 format for ACL whitelisting"
+  value       = "${data.oci_core_nat_gateway.main.nat_ip}/32"
 }
 
 output "service_gateway_id" {

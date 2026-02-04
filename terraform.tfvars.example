@@ -50,7 +50,8 @@ adb_db_version     = "19c"
 adb_db_workload    = "OLTP"
 
 # Additional IPs to whitelist for database access (optional)
-# NAT Gateway IP is automatically included. Add other IPs if needed:
+# NAT Gateway IP is automatically included in CIDR /32 format.
+# Add other IPs if needed (use CIDR notation, e.g., /32 for single IPs):
 # - Bastion host public IP for direct database access
 # - Developer IPs for development/debugging
 # - CI/CD pipeline IPs for automated testing

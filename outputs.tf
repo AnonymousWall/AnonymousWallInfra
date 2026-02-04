@@ -20,7 +20,7 @@ output "db_subnet_id" {
 }
 
 output "nat_gateway_public_ip" {
-  description = "Public IP address of the NAT gateway (whitelisted for database access)"
+  description = "Public IP address of the NAT gateway in CIDR /32 format (whitelisted for database access)"
   value       = module.network.nat_gateway_public_ip
 }
 

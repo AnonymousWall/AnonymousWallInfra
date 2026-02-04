@@ -344,8 +344,10 @@ terraform destroy
 
 **Issue**: Database connection fails with ORA-12506 error
 - The Autonomous Database uses Access Control List (ACL) filtering for security
-- The NAT Gateway's public IP is automatically whitelisted to allow connections from backend instances
-- If you need to connect from additional IPs, update the `whitelisted_ips` variable in the database module
+- The NAT Gateway's public IP is automatically whitelisted in CIDR /32 format to allow connections from backend instances
+- Verify the NAT Gateway IP was added: Run `terraform output nat_gateway_public_ip` to see the whitelisted IP
+- Check the database ACL in OCI Console: Navigate to your Autonomous Database → Network → Access Control List
+- If you need to connect from additional IPs (e.g., bastion, developer IPs), add them to the `additional_whitelisted_ips` variable in CIDR format
 - Verify the NAT Gateway is properly configured and has a public IP assigned
 
 ### Getting Help
