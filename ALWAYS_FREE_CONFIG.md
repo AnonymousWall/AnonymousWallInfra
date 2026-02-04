@@ -26,7 +26,7 @@ The autonomous database module has been updated to use the Always Free tier:
 - Only public endpoints (no VCN integration)
 - Maximum 30 simultaneous database sessions
 - **mTLS (mutual TLS) is required** for secure connections
-- **IP whitelisting required**: Backend instances connect via NAT Gateway IP (automatically configured)
+- **IP whitelisting required**: Backend instances connect via NAT Gateway IP (automatically configured in CIDR notation with /32 suffix)
 
 ### 2. Compute Instances - RECOMMENDATIONS
 
