@@ -4,27 +4,27 @@ This document explains the changes made to configure the infrastructure to use O
 
 ## Changes Made
 
-### 1. Autonomous Database - COMPLETED ✓
-The autonomous database module has been updated to use the Always Free tier:
+### 1. MySQL Database System - COMPLETED ✓
+The MySQL database module has been updated to use a standard configuration:
 
 **Changes:**
-- Set `is_free_tier = true`
-- Set `is_mtls_connection_required = true` (required for Always Free public endpoints)
-- Removed conflicting attributes that are not compatible with Always Free:
-  - `cpu_core_count` (Always Free automatically gets 1 OCPU)
-  - `data_storage_size_in_tbs` (Always Free automatically gets 20 GB)
-  - `subnet_id` (Always Free only supports public endpoints)
-  - `license_model` (Always Free has a fixed license model)
-  - `is_auto_scaling_enabled` (Not supported in Always Free)
-  - `nsg_ids` (Not needed for public endpoint)
+- Set `mysql_shape_name` to define the VM shape for the database instance
+- Set `mysql_data_storage_size_in_gb` for storage allocation
+- Configured `mysql_subnet_id` for VCN integration (required for MySQL)
+- Removed ADB-specific attributes:
+  - `is_free_tier` (MySQL does not have an Always Free tier)
+  - `is_mtls_connection_required` (MySQL uses standard authentication)
+  - Public endpoint only restrictions (MySQL requires VCN integration)
+  - Wallet authentication (MySQL uses username/password authentication)
 
-**Always Free Limits:**
-- Maximum 2 Autonomous Databases per account
-- 1 OCPU per database
-- 20 GB storage per database
-- Only public endpoints (no VCN integration)
-- Maximum 30 simultaneous database sessions
-- **mTLS (mutual TLS) is required** for secure connections
+**MySQL Database System Configuration:**
+- **Note:** MySQL Database System is **NOT** part of OCI Always Free tier
+- Requires a paid OCI account or credits
+- Minimum configuration: VM.Standard.E2.1 shape (1 OCPU, 8 GB RAM)
+- Storage: Minimum 50 GB, expandable up to 64 TB
+- **VCN integration required** - must be deployed in a private subnet
+- Supports standard MySQL authentication (username/password)
+- Accessible via private IP within VCN or through bastion/VPN
 
 ### 2. Compute Instances - RECOMMENDATIONS
 
@@ -110,7 +110,7 @@ Update `terraform.tfvars` or your variable values:
 **Removed Resources:**
 - VLAN resource has been removed as VLANs are not available in the Always Free tier (requires VMware SKU whitelisting)
 
-Note: The database subnet is still created but won't be used by the Autonomous Database since Always Free tier uses public endpoints only.
+**Important:** The database subnet is required and actively used by the MySQL Database System for VCN integration. MySQL instances must be deployed in a private subnet and cannot use public endpoints directly.
 
 ## Summary of Terraform Variable Updates
 
@@ -127,8 +127,11 @@ instance_count = 2  # Up to 4 instances allowed
 lb_min_bandwidth_mbps = 10
 lb_max_bandwidth_mbps = 10  # Fixed at 10 Mbps for Always Free
 
-# Database configuration - Already updated
-# The database module now automatically uses Always Free tier
+# MySQL Database configuration
+# Note: MySQL Database System is NOT part of Always Free tier
+# Requires paid account or credits. Consider alternative Always Free database options:
+# - Autonomous Database (up to 2 instances with Always Free)
+# - Or use self-managed MySQL on Always Free Compute instances
 ```
 
 ## Additional Always Free Resources
