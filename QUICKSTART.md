@@ -32,9 +32,10 @@ This Terraform configuration creates a complete, production-ready backend infras
    - Oracle Linux 9
 
 4. **Database Layer**
-   - Autonomous Database (ADB)
-   - OLTP workload optimized
-   - 1 CPU core, 1TB storage (auto-scaling enabled)
+   - MySQL Database System
+   - Standalone configuration
+   - VM.Standard.E4.Flex shape (1 OCPU, 8GB RAM)
+   - 50GB storage
    - Private network access only
    - Automatic backups
 
@@ -148,7 +149,7 @@ ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC..." # content of ~/.ss
 availability_domain = "xxxx:US-ASHBURN-AD-1"
 
 # Database Password (must be complex)
-adb_admin_password = "YourComplexPassword123!@#"
+mysql_admin_password = "YourComplexPassword123!@#"
 ```
 
 ### Step 7: Initialize Terraform
@@ -205,8 +206,8 @@ Important outputs:
    - Check Backend Set health status
 
 3. **Check Database:**
-   - Go to OCI Console → Oracle Database → Autonomous Database
-   - Verify database is "Available"
+   - Go to OCI Console → Databases → MySQL DB Systems
+   - Verify database is "Active"
 
 ### Access Backend Instances
 
@@ -316,7 +317,7 @@ Update nameservers at your domain registrar with the nameservers from terraform 
 ### OCI Console
 
 - **Compute**: Compute → Instances
-- **Database**: Oracle Database → Autonomous Database
+- **Database**: Databases → MySQL DB Systems
 - **Network**: Networking → Load Balancers
 - **Monitoring**: Observability → Monitoring
 
@@ -333,10 +334,10 @@ View metrics for:
 Estimated monthly costs (may vary by region):
 
 - Compute (2 instances): ~$50-70
-- Autonomous Database (1 OCPU): ~$180-200
+- MySQL Database System (1 OCPU, 50GB): ~$50-60
 - Load Balancer (Flexible): ~$25-30
 - Network: ~$10-20
-- **Total**: ~$265-320/month
+- **Total**: ~$135-180/month
 
 Cost-saving tips:
 - Use Always Free tier resources for development
