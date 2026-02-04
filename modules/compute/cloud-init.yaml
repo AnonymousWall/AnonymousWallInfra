@@ -11,7 +11,7 @@ packages:
 
 runcmd:
   # Install Podman and podman-compose on OL9
-  - dnf install -y podman podman-docker
+  - dnf install -y podman
   - pip3 install podman-compose==1.0.6
 
   # Enable Podman socket for Docker-compatible CLI usage
