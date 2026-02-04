@@ -137,9 +137,9 @@ variable "mysql_admin_password" {
 }
 
 variable "mysql_version" {
-  description = "MySQL version"
+  description = "MySQL version (e.g., 8.0, 8.4)"
   type        = string
-  default     = "8.0.36"
+  default     = "8.0"
 }
 
 variable "mysql_shape_name" {

@@ -40,10 +40,14 @@ bastion_memory_in_gbs = 1  # 1 GB RAM
 # Database Configuration (MySQL Database System)
 # MySQL Database System provides managed MySQL service with automated backups,
 # high availability, and scalability options.
+# 
+# MySQL Version: Use major.minor format (e.g., "8.0" or "8.4")
+# To see available versions, check OCI Console or use data source:
+#   data "oci_mysql_mysql_versions" "versions" { compartment_id = var.compartment_ocid }
 mysql_display_name            = "anonymouswall-mysql"
 mysql_admin_username          = "admin"
 mysql_admin_password          = "ComplexPassword123!@#"
-mysql_version                 = "8.0.36"
+mysql_version                 = "8.0"
 mysql_shape_name              = "MySQL.VM.Standard.E3.1.8GB"
 mysql_data_storage_size_in_gb = 50
 
