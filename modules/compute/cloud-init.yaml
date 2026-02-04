@@ -3,15 +3,18 @@ package_update: true
 package_upgrade: true
 
 packages:
-  - podman
-  - podman-compose
-  - podman-docker
+  - python3-pip
   - git
   - curl
   - wget
   - vim
 
 runcmd:
+  # Install Podman and podman-compose on OL9
+  - dnf install -y podman
+  - pip3 install podman-compose
+  - ln -sf /usr/bin/podman /usr/bin/docker
+
   # Enable Podman socket for Docker-compatible CLI usage
   - systemctl enable --now podman.socket
   
