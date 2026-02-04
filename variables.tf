@@ -168,7 +168,7 @@ variable "adb_license_model" {
 }
 
 variable "additional_whitelisted_ips" {
-  description = "Additional IP addresses or CIDR blocks to whitelist for database access (e.g., bastion host, developer IPs, CI/CD pipelines). The NAT Gateway IP is automatically included."
+  description = "Additional IP addresses or CIDR blocks to whitelist for database access (e.g., bastion host, developer IPs, CI/CD pipelines). The NAT Gateway IP is automatically included. To temporarily allow all IPs for testing, add '0.0.0.0/0' (NOT recommended for production)."
   type        = list(string)
   default     = []
 }

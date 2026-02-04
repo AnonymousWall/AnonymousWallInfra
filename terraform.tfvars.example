@@ -53,9 +53,16 @@ adb_db_workload    = "OLTP"
 # NAT Gateway IP is automatically included in CIDR /32 format.
 # Add other IPs if needed (use CIDR notation, e.g., /32 for single IPs):
 # - Bastion host public IP for direct database access
-# - Developer IPs for development/debugging
+# - Developer IPs for development/debugging  
 # - CI/CD pipeline IPs for automated testing
+# - To allow all IPs temporarily for testing: ["0.0.0.0/0"] (NOT recommended for production)
 # Example: additional_whitelisted_ips = ["1.2.3.4/32", "5.6.7.8/32"]
+#
+# TROUBLESHOOTING: If backend instances can't connect:
+# 1. Verify NAT Gateway IP: terraform output nat_gateway_public_ip
+# 2. SSH to backend and check outbound IP: curl -s ifconfig.me (should match NAT Gateway IP)
+# 3. Temporarily allow all IPs for testing: additional_whitelisted_ips = ["0.0.0.0/0"]
+#    (Remember to remove this after testing!)
 additional_whitelisted_ips = []
 
 # The following database parameters are not used in Always Free tier but kept for backward compatibility

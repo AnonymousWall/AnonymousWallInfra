@@ -345,10 +345,33 @@ terraform destroy
 **Issue**: Database connection fails with ORA-12506 error
 - The Autonomous Database uses Access Control List (ACL) filtering for security
 - The NAT Gateway's public IP is automatically whitelisted in CIDR /32 format to allow connections from backend instances
-- Verify the NAT Gateway IP was added: Run `terraform output nat_gateway_public_ip` to see the whitelisted IP
-- Check the database ACL in OCI Console: Navigate to your Autonomous Database → Network → Access Control List
-- If you need to connect from additional IPs (e.g., bastion, developer IPs), add them to the `additional_whitelisted_ips` variable in CIDR format
-- Verify the NAT Gateway is properly configured and has a public IP assigned
+
+**Troubleshooting Steps:**
+1. **Verify NAT Gateway IP is whitelisted:**
+   - Run: `terraform output nat_gateway_public_ip` (should show IP in CIDR /32 format like "40.233.79.205/32")
+   - Check OCI Console: Navigate to your Autonomous Database → Network → Access Control List
+   - Verify the NAT Gateway IP appears in the ACL list
+
+2. **Test if backend instances are using NAT Gateway:**
+   - SSH to backend instance via bastion: `ssh -J opc@<bastion-ip> opc@<backend-private-ip>`
+   - Check outbound IP: `curl -s ifconfig.me` (should match NAT Gateway IP)
+   - If IPs don't match, check private subnet route table has NAT Gateway for 0.0.0.0/0
+
+3. **Temporary testing - Allow all IPs (NOT for production):**
+   - Add to `terraform.tfvars`: `additional_whitelisted_ips = ["0.0.0.0/0"]`
+   - Run: `terraform apply`
+   - Test database connection - if it works, the issue is with IP routing
+   - **IMPORTANT:** Remove "0.0.0.0/0" after testing and use specific IPs only
+
+4. **Check application connection string:**
+   - Ensure app is using the correct wallet and connection string
+   - Verify mTLS wallet is properly configured (Always Free requires mTLS)
+   - Check application logs for actual source IP being used
+
+5. **Add bastion/developer IPs if needed:**
+   - Get your public IP: `curl -s ifconfig.me`
+   - Add to `additional_whitelisted_ips`: `["<your-ip>/32", "<bastion-ip>/32"]`
+   - Apply changes: `terraform apply`
 
 ### Getting Help
 
