@@ -58,6 +58,17 @@ output "adb_connection_strings" {
   sensitive   = true
 }
 
+output "adb_service_console_url" {
+  description = "Service console URL for the Autonomous Database"
+  value       = module.database.adb_service_console_url
+}
+
+output "adb_wallet_content" {
+  description = "Wallet content for the Autonomous Database"
+  value       = module.database.adb_wallet_content
+  sensitive   = true
+}
+
 # Load Balancer Outputs
 output "load_balancer_id" {
   description = "OCID of the load balancer"
