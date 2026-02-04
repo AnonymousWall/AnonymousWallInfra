@@ -9,7 +9,7 @@ This Terraform configuration deploys a complete production-ready infrastructure 
 - **Networking**: VCN with public, private, and database subnets, Internet Gateway, NAT Gateway, Service Gateway, and VLANs
 - **Compute**: Multiple backend instances with automatic scaling capabilities
 - **Bastion Host**: Jump host for secure SSH access to backend instances
-- **Database**: Autonomous Database (ADB) for data persistence
+- **Database**: MySQL Database System for data persistence
 - **Load Balancer**: Flexible load balancer for distributing traffic
 - **IAM**: Policies and dynamic groups for secure resource access
 - **DNS**: Optional DNS configuration for custom domain setup
@@ -25,7 +25,7 @@ Internet
     |   [Backend Instances] (Private Subnet)
     |         |
     |         v
-    |   [Autonomous Database] (Database Subnet)
+    |   [MySQL Database] (Database Subnet)
     |
     +-- [Bastion Host] (Public Subnet)
               |
@@ -81,7 +81,7 @@ compartment_ocid = "ocid1.compartment.oc1..xxxxx"
 # Update other variables as needed
 ssh_public_key      = "ssh-rsa AAAAB3Nza..."
 availability_domain = "ABCD:US-ASHBURN-AD-1"
-adb_admin_password  = "YourStrongPassword123!@#"
+mysql_admin_password  = "YourStrongPassword123!@#"
 ```
 
 ### 3. Initialize Terraform
@@ -117,7 +117,7 @@ Key outputs include:
 - `application_url`: URL to access your application
 - `bastion_public_ip`: Public IP address of the bastion host for SSH access
 - `ssh_access_instructions`: Instructions for accessing backend instances
-- `adb_connection_strings`: Database connection strings (sensitive)
+- `mysql_hostname`: MySQL database hostname (sensitive)
 
 ## Module Structure
 
@@ -132,7 +132,7 @@ Key outputs include:
     ├── network/           # VCN, subnets, gateways, VLANs
     ├── compute/           # Compute instances with VNICs
     ├── bastion/           # Bastion host for SSH access
-    ├── database/          # Autonomous Database
+    ├── database/          # MySQL Database System
     ├── load_balancer/     # Load balancer configuration
     ├── iam/               # IAM policies and dynamic groups
     └── dns/               # DNS zone and records
@@ -143,7 +143,7 @@ Key outputs include:
 - **VCN**: `10.0.0.0/16`
 - **Public Subnet**: `10.0.1.0/24` (Load Balancer)
 - **Private Subnet**: `10.0.2.0/24` (Backend Instances)
-- **Database Subnet**: `10.0.3.0/24` (Autonomous Database)
+- **Database Subnet**: `10.0.3.0/24` (MySQL Database)
 - **VLAN**: `10.0.10.0/24` (High-performance networking)
 
 ## Security
@@ -228,7 +228,7 @@ oci db autonomous-database list --compartment-id <compartment_ocid>
 
 ### Backup and Disaster Recovery
 
-- **Database**: ADB automatically backs up daily
+- **Database**: MySQL automatically backs up daily
 - **Terraform State**: Store in OCI Object Storage with versioning
 - **Configuration**: Keep `terraform.tfvars` backed up securely
 
@@ -371,7 +371,7 @@ For issues and questions:
 - **v1.0.0** (2026-01-31): Initial release
   - VCN with multi-tier networking
   - Compute instances with auto-scaling
-  - Autonomous Database
+  - MySQL Database System
   - Load balancer with health checks
   - IAM policies and dynamic groups
   - Optional DNS configuration
