@@ -264,7 +264,7 @@ ssh backend-<backend-private-ip>
    cd /opt/anonymouswall
    ```
 
-3. **Create docker-compose.yml:**
+3. **Create docker-compose.yml (used by podman-compose):**
    ```yaml
    version: '3.8'
    services:
@@ -278,8 +278,15 @@ ssh backend-<backend-private-ip>
 
 4. **Start application:**
    ```bash
-   docker-compose up -d
+   podman-compose up -d
    ```
+
+This first run creates and registers a systemd unit (`/etc/systemd/system/anonymouswall.service`) via cloud-init. The unit is a oneshot service that:
+
+- waits for networking and the Podman socket
+- runs `podman-compose up -d` from `/opt/anonymouswall`
+- leaves containers running after the service exits
+- supports `podman-compose down` on stop or disable
 
 ## Configuration Options
 
