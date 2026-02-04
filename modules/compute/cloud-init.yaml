@@ -12,10 +12,8 @@ packages:
 runcmd:
   # Install Podman and podman-compose on OL9
   - dnf install -y podman
-  # Install podman-compose under /usr/local to avoid RPM-managed Python conflicts.
   # Pinned for OL9 compatibility; update intentionally when validated with Podman.
-  - pip3 install --prefix /usr/local podman-compose==1.0.6
-  - test -x /usr/local/bin/podman-compose && ln -sf /usr/local/bin/podman-compose /usr/bin/podman-compose
+  - pip3 install podman-compose==1.0.6
 
   # Enable Podman socket for Docker-compatible CLI usage
   - systemctl enable --now podman.socket
@@ -44,8 +42,8 @@ write_files:
       Type=oneshot
       RemainAfterExit=yes
       WorkingDirectory=/opt/${app_name}
-      ExecStart=/usr/bin/podman-compose up -d
-      ExecStop=/usr/bin/podman-compose down
+      ExecStart=/usr/local/bin/podman-compose up -d
+      ExecStop=/usr/local/bin/podman-compose down
 
       [Install]
       WantedBy=multi-user.target
