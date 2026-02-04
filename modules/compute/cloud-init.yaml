@@ -15,6 +15,7 @@ runcmd:
   # Install podman-compose under /usr/local to avoid RPM-managed Python conflicts.
   # Pinned for OL9 compatibility; update intentionally when validated with Podman.
   - pip3 install --prefix /usr/local podman-compose==1.0.6
+  - ln -sf /usr/local/bin/podman-compose /usr/bin/podman-compose
 
   # Enable Podman socket for Docker-compatible CLI usage
   - systemctl enable --now podman.socket
