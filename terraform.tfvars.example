@@ -42,11 +42,20 @@ bastion_memory_in_gbs = 1  # 1 GB RAM
 # - 1 OCPU (automatic)
 # - 20 GB storage (automatic)
 # - Public endpoint only (no VCN integration)
+# - ACL automatically includes NAT Gateway IP for backend instance access
 adb_display_name   = "anonymouswall-adb"
 adb_db_name        = "ANONWALLDB"
 adb_admin_password = "ComplexPassword123!@#"
 adb_db_version     = "19c"
 adb_db_workload    = "OLTP"
+
+# Additional IPs to whitelist for database access (optional)
+# NAT Gateway IP is automatically included. Add other IPs if needed:
+# - Bastion host public IP for direct database access
+# - Developer IPs for development/debugging
+# - CI/CD pipeline IPs for automated testing
+# Example: additional_whitelisted_ips = ["1.2.3.4/32", "5.6.7.8/32"]
+additional_whitelisted_ips = []
 
 # The following database parameters are not used in Always Free tier but kept for backward compatibility
 adb_cpu_core_count          = 1

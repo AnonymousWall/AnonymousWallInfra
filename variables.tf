@@ -167,6 +167,12 @@ variable "adb_license_model" {
   default     = "LICENSE_INCLUDED"
 }
 
+variable "additional_whitelisted_ips" {
+  description = "Additional IP addresses or CIDR blocks to whitelist for database access (e.g., bastion host, developer IPs, CI/CD pipelines). The NAT Gateway IP is automatically included."
+  type        = list(string)
+  default     = []
+}
+
 # Load Balancer Variables
 variable "lb_shape" {
   description = "Shape of the load balancer"

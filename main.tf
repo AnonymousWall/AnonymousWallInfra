@@ -53,7 +53,8 @@ module "database" {
   adb_admin_password = var.adb_admin_password
   adb_db_version     = var.adb_db_version
   adb_db_workload    = var.adb_db_workload
-  whitelisted_ips    = [module.network.nat_gateway_public_ip]
+  # Combine NAT Gateway IP with any additional whitelisted IPs
+  whitelisted_ips    = concat([module.network.nat_gateway_public_ip], var.additional_whitelisted_ips)
   app_name           = var.app_name
   environment        = var.environment
   tags               = var.tags
