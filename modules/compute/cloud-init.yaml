@@ -12,7 +12,7 @@ packages:
 runcmd:
   # Install Podman and podman-compose on OL9
   - dnf install -y podman podman-docker
-  - pip3 install --user podman-compose==1.0.6
+  - pip3 install podman-compose==1.0.6
 
   # Enable Podman socket for Docker-compatible CLI usage
   - systemctl enable --now podman.socket
