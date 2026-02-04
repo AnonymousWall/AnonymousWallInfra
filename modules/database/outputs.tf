@@ -1,21 +1,19 @@
-output "adb_id" {
-  description = "OCID of the Autonomous Database"
-  value       = oci_database_autonomous_database.main.id
+output "mysql_id" {
+  description = "OCID of the MySQL Database System"
+  value       = oci_mysql_mysql_db_system.main.id
 }
 
-output "adb_connection_strings" {
-  description = "Connection strings for the Autonomous Database"
-  value       = oci_database_autonomous_database.main.connection_strings
-  sensitive   = true
+output "mysql_hostname" {
+  description = "Hostname for the MySQL Database System"
+  value       = oci_mysql_mysql_db_system.main.endpoints[0].hostname
 }
 
-output "adb_service_console_url" {
-  description = "Service console URL for the Autonomous Database"
-  value       = oci_database_autonomous_database.main.service_console_url
+output "mysql_port" {
+  description = "Port for the MySQL Database System"
+  value       = oci_mysql_mysql_db_system.main.endpoints[0].port
 }
 
-output "adb_wallet_content" {
-  description = "Wallet content for the Autonomous Database"
-  value       = oci_database_autonomous_database_wallet.main.content
-  sensitive   = true
+output "mysql_ip_address" {
+  description = "IP address for the MySQL Database System"
+  value       = oci_mysql_mysql_db_system.main.endpoints[0].ip_address
 }

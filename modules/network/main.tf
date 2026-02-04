@@ -206,27 +206,27 @@ resource "oci_core_security_list" "db" {
   display_name   = "${var.app_name}-${var.environment}-db-sl"
   freeform_tags  = var.tags
 
-  # Allow inbound from private subnet on database ports
+  # Allow inbound from private subnet on MySQL port
   ingress_security_rules {
     protocol    = "6" # TCP
     source      = var.private_subnet_cidr
     stateless   = false
-    description = "Allow database access from app servers"
+    description = "Allow MySQL access from app servers"
     tcp_options {
-      min = 1521
-      max = 1522
+      min = 3306
+      max = 3306
     }
   }
 
-  # Allow HTTPS for ADB connections
+  # Allow inbound from private subnet on MySQL X Protocol port
   ingress_security_rules {
     protocol    = "6" # TCP
     source      = var.private_subnet_cidr
     stateless   = false
-    description = "Allow HTTPS for ADB"
+    description = "Allow MySQL X Protocol access from app servers"
     tcp_options {
-      min = 443
-      max = 443
+      min = 33060
+      max = 33060
     }
   }
 
@@ -266,7 +266,7 @@ resource "oci_core_subnet" "private" {
   freeform_tags              = var.tags
 }
 
-# Database Subnet (for ADB)
+# Database Subnet (for MySQL Database)
 resource "oci_core_subnet" "db" {
   compartment_id             = var.compartment_ocid
   vcn_id                     = oci_core_vcn.main.id

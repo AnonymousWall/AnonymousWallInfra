@@ -43,19 +43,22 @@ module "compute" {
   tags                   = var.tags
 }
 
-# Autonomous Database Module
+# MySQL Database Module
 module "database" {
   source = "./modules/database"
 
-  compartment_ocid   = var.compartment_ocid
-  adb_display_name   = var.adb_display_name
-  adb_db_name        = var.adb_db_name
-  adb_admin_password = var.adb_admin_password
-  adb_db_version     = var.adb_db_version
-  adb_db_workload    = var.adb_db_workload
-  app_name           = var.app_name
-  environment        = var.environment
-  tags               = var.tags
+  compartment_ocid              = var.compartment_ocid
+  availability_domain           = var.availability_domain
+  subnet_id                     = module.network.db_subnet_id
+  mysql_display_name            = var.mysql_display_name
+  mysql_admin_username          = var.mysql_admin_username
+  mysql_admin_password          = var.mysql_admin_password
+  mysql_version                 = var.mysql_version
+  mysql_shape_name              = var.mysql_shape_name
+  mysql_data_storage_size_in_gb = var.mysql_data_storage_size_in_gb
+  app_name                      = var.app_name
+  environment                   = var.environment
+  tags                          = var.tags
 }
 
 # Bastion Module

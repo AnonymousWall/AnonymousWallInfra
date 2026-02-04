@@ -37,21 +37,15 @@ bastion_shape         = "VM.Standard.A1.Flex"  # Arm-based Always Free shape
 bastion_ocpus         = 1  # 1 OCPU
 bastion_memory_in_gbs = 1  # 1 GB RAM
 
-# Database Configuration (Always Free - automatically configured)
-# The database module uses Always Free tier with:
-# - 1 OCPU (automatic)
-# - 20 GB storage (automatic)
-# - Public endpoint only (no VCN integration)
-adb_display_name   = "anonymouswall-adb"
-adb_db_name        = "ANONWALLDB"
-adb_admin_password = "ComplexPassword123!@#"
-adb_db_version     = "19c"
-adb_db_workload    = "OLTP"
-
-# The following database parameters are not used in Always Free tier but kept for backward compatibility
-adb_cpu_core_count          = 1
-adb_data_storage_size_in_tbs = 1
-adb_license_model           = "LICENSE_INCLUDED"
+# Database Configuration (MySQL Database System)
+# MySQL Database System provides managed MySQL service with automated backups,
+# high availability, and scalability options.
+mysql_display_name            = "anonymouswall-mysql"
+mysql_admin_username          = "admin"
+mysql_admin_password          = "ComplexPassword123!@#"
+mysql_version                 = "8.0.36"
+mysql_shape_name              = "MySQL.VM.Standard.E3.1.8GB"
+mysql_data_storage_size_in_gb = 50
 
 # Load Balancer Configuration (Always Free Compatible)
 # Always Free: 1 load balancer with 10 Mbps fixed bandwidth

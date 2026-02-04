@@ -47,14 +47,25 @@ output "bastion_public_ip" {
 }
 
 # Database Outputs
-output "adb_id" {
-  description = "OCID of the Autonomous Database"
-  value       = module.database.adb_id
+output "mysql_id" {
+  description = "OCID of the MySQL Database System"
+  value       = module.database.mysql_id
 }
 
-output "adb_connection_strings" {
-  description = "Connection strings for the Autonomous Database"
-  value       = module.database.adb_connection_strings
+output "mysql_hostname" {
+  description = "Hostname for the MySQL Database System"
+  value       = module.database.mysql_hostname
+  sensitive   = true
+}
+
+output "mysql_port" {
+  description = "Port for the MySQL Database System"
+  value       = module.database.mysql_port
+}
+
+output "mysql_ip_address" {
+  description = "IP address for the MySQL Database System"
+  value       = module.database.mysql_ip_address
   sensitive   = true
 }
 

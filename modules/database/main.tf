@@ -1,23 +1,18 @@
-# Autonomous Database Module
+# MySQL Database System Module
 
-resource "oci_database_autonomous_database" "main" {
-  compartment_id              = var.compartment_ocid
-  db_name                     = var.adb_db_name
-  display_name                = var.adb_display_name
-  admin_password              = var.adb_admin_password
-  db_version                  = var.adb_db_version
-  db_workload                 = var.adb_db_workload
-  is_free_tier                = true
-  is_mtls_connection_required = true
+resource "oci_mysql_mysql_db_system" "main" {
+  compartment_id      = var.compartment_ocid
+  display_name        = var.mysql_display_name
+  admin_password      = var.mysql_admin_password
+  admin_username      = var.mysql_admin_username
+  availability_domain = var.availability_domain
+  shape_name          = var.mysql_shape_name
+  subnet_id           = var.subnet_id
+
+  data_storage_size_in_gb = var.mysql_data_storage_size_in_gb
+  mysql_version           = var.mysql_version
 
   freeform_tags = merge(var.tags, {
-    Name = var.adb_display_name
+    Name = var.mysql_display_name
   })
-}
-
-# Autonomous Database Wallet (optional - for secure connections)
-resource "oci_database_autonomous_database_wallet" "main" {
-  autonomous_database_id = oci_database_autonomous_database.main.id
-  password               = var.adb_admin_password
-  base64_encode_content  = true
 }

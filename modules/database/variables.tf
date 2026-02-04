@@ -3,29 +3,45 @@ variable "compartment_ocid" {
   type        = string
 }
 
-variable "adb_display_name" {
-  description = "Display name for the Autonomous Database"
+variable "mysql_display_name" {
+  description = "Display name for the MySQL Database System"
   type        = string
 }
 
-variable "adb_db_name" {
-  description = "Database name for the Autonomous Database"
+variable "mysql_admin_username" {
+  description = "Admin username for the MySQL Database System"
   type        = string
+  default     = "admin"
 }
 
-variable "adb_admin_password" {
-  description = "Admin password for the Autonomous Database"
+variable "mysql_admin_password" {
+  description = "Admin password for the MySQL Database System"
   type        = string
   sensitive   = true
 }
 
-variable "adb_db_version" {
-  description = "Database version for the ADB"
+variable "mysql_version" {
+  description = "MySQL version"
   type        = string
 }
 
-variable "adb_db_workload" {
-  description = "Workload type for the ADB (OLTP or DW)"
+variable "mysql_shape_name" {
+  description = "Shape name for the MySQL Database System"
+  type        = string
+}
+
+variable "mysql_data_storage_size_in_gb" {
+  description = "Data storage size in GB for the MySQL Database System"
+  type        = number
+}
+
+variable "subnet_id" {
+  description = "OCID of the subnet for the MySQL database"
+  type        = string
+}
+
+variable "availability_domain" {
+  description = "Availability domain for the MySQL Database System"
   type        = string
 }
 
@@ -42,29 +58,4 @@ variable "environment" {
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
-}
-
-# Optional variables - not used in Always Free tier but kept for backward compatibility
-variable "subnet_id" {
-  description = "OCID of the subnet for the database (not used in Always Free tier)"
-  type        = string
-  default     = ""
-}
-
-variable "adb_cpu_core_count" {
-  description = "Number of CPU cores for the ADB (not used in Always Free tier)"
-  type        = number
-  default     = 1
-}
-
-variable "adb_data_storage_size_in_tbs" {
-  description = "Data storage size in TBs for the ADB (not used in Always Free tier)"
-  type        = number
-  default     = 1
-}
-
-variable "adb_license_model" {
-  description = "License model for the ADB (not used in Always Free tier)"
-  type        = string
-  default     = "LICENSE_INCLUDED"
 }

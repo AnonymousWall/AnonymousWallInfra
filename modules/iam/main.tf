@@ -21,14 +21,14 @@ resource "oci_identity_policy" "compute_object_storage" {
   freeform_tags = var.tags
 }
 
-# Policy for Compute Instances to access Autonomous Database
+# Policy for Compute Instances to access MySQL Database
 resource "oci_identity_policy" "compute_database" {
   compartment_id = var.compartment_ocid
-  description    = "Policy for ${var.app_name} compute instances to access ADB"
+  description    = "Policy for ${var.app_name} compute instances to access MySQL Database"
   name           = "${var.app_name}-${var.environment}-compute-db-policy"
   statements = [
-    "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to read autonomous-databases in compartment id ${var.compartment_ocid}",
-    "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to use autonomous-databases in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to read mysql-family in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to use mysql-family in compartment id ${var.compartment_ocid}",
   ]
   freeform_tags = var.tags
 }

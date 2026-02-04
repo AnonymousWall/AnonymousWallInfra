@@ -118,53 +118,40 @@ variable "bastion_memory_in_gbs" {
 }
 
 # Database Variables
-variable "adb_display_name" {
-  description = "Display name for the Autonomous Database"
+variable "mysql_display_name" {
+  description = "Display name for the MySQL Database System"
   type        = string
-  default     = "anonymouswall-adb"
+  default     = "anonymouswall-mysql"
 }
 
-variable "adb_db_name" {
-  description = "Database name for the Autonomous Database"
+variable "mysql_admin_username" {
+  description = "Admin username for the MySQL Database System"
   type        = string
-  default     = "ANONWALLDB"
+  default     = "admin"
 }
 
-variable "adb_admin_password" {
-  description = "Admin password for the Autonomous Database"
+variable "mysql_admin_password" {
+  description = "Admin password for the MySQL Database System"
   type        = string
   sensitive   = true
 }
 
-variable "adb_db_version" {
-  description = "Database version for the ADB"
+variable "mysql_version" {
+  description = "MySQL version"
   type        = string
-  default     = "19c"
+  default     = "8.0.36"
 }
 
-variable "adb_db_workload" {
-  description = "Workload type for the ADB (OLTP or DW)"
+variable "mysql_shape_name" {
+  description = "Shape name for the MySQL Database System"
   type        = string
-  default     = "OLTP"
+  default     = "MySQL.VM.Standard.E3.1.8GB"
 }
 
-# The following variables are not used in Always Free tier but kept for backward compatibility
-variable "adb_cpu_core_count" {
-  description = "Number of CPU cores for the ADB (Always Free tier uses 1 OCPU automatically)"
+variable "mysql_data_storage_size_in_gb" {
+  description = "Data storage size in GB for the MySQL Database System"
   type        = number
-  default     = 1
-}
-
-variable "adb_data_storage_size_in_tbs" {
-  description = "Data storage size in TBs for the ADB (Always Free tier uses 20GB automatically)"
-  type        = number
-  default     = 1
-}
-
-variable "adb_license_model" {
-  description = "License model for the ADB (Always Free tier has a fixed license model)"
-  type        = string
-  default     = "LICENSE_INCLUDED"
+  default     = 50
 }
 
 # Load Balancer Variables
