@@ -264,7 +264,7 @@ ssh backend-<backend-private-ip>
    cd /opt/anonymouswall
    ```
 
-3. **Create docker-compose.yml:**
+3. **Create docker-compose.yml (used by podman-compose):**
    ```yaml
    version: '3.8'
    services:
@@ -277,9 +277,9 @@ ssh backend-<backend-private-ip>
    ```
 
 4. **Start application:**
-   ```bash
-   docker-compose up -d
-   ```
+    ```bash
+    podman-compose up -d
+    ```
 
 ## Configuration Options
 
