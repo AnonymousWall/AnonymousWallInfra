@@ -277,9 +277,9 @@ ssh backend-<backend-private-ip>
    ```
 
 4. **Start application:**
-    ```bash
-    podman-compose up -d
-    ```
+   ```bash
+   podman-compose up -d
+   ```
 
 ## Configuration Options
 

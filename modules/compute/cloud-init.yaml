@@ -33,6 +33,7 @@ write_files:
       Description=${app_name} Backend Service
       After=network-online.target podman.socket
       Requires=network-online.target podman.socket
+      Wants=network-online.target
 
       [Service]
       Type=oneshot
