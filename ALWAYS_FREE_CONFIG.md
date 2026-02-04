@@ -130,8 +130,8 @@ lb_max_bandwidth_mbps = 10  # Fixed at 10 Mbps for Always Free
 # MySQL Database configuration
 # Note: MySQL Database System is NOT part of Always Free tier
 # Requires paid account or credits. Consider alternative Always Free database options:
-# - Autonomous Database (up to 2 instances with Always Free)
-# - Or use self-managed MySQL on Always Free Compute instances
+# - Self-managed MySQL on Always Free Compute instances (recommended)
+# - Self-managed PostgreSQL on Always Free Compute instances
 ```
 
 ## Additional Always Free Resources

@@ -223,7 +223,7 @@ oci compute instance list --compartment-id <compartment_ocid>
 oci lb load-balancer list --compartment-id <compartment_ocid>
 
 # Database status
-oci db autonomous-database list --compartment-id <compartment_ocid>
+oci mysql db-system list --compartment-id <compartment_ocid>
 ```
 
 ### Backup and Disaster Recovery
