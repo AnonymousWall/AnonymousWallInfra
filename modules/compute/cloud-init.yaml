@@ -31,15 +31,15 @@ write_files:
     content: |
       [Unit]
       Description=${app_name} Backend Service
-      After=network-online.target
-      Requires=network-online.target
+      After=network-online.target podman.socket
+      Requires=network-online.target podman.socket
 
       [Service]
       Type=oneshot
       RemainAfterExit=yes
       WorkingDirectory=/opt/${app_name}
-      ExecStart=/usr/bin/env podman-compose up -d
-      ExecStop=/usr/bin/env podman-compose down
+      ExecStart=/usr/bin/podman-compose up -d
+      ExecStop=/usr/bin/podman-compose down
 
       [Install]
       WantedBy=multi-user.target
