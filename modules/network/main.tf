@@ -28,6 +28,11 @@ resource "oci_core_nat_gateway" "main" {
   freeform_tags  = var.tags
 }
 
+# Data source to get NAT Gateway public IP
+data "oci_core_nat_gateway" "main" {
+  nat_gateway_id = oci_core_nat_gateway.main.id
+}
+
 # Service Gateway
 data "oci_core_services" "all_services" {
   filter {

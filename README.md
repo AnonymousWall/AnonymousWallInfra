@@ -342,6 +342,12 @@ terraform destroy
 - Check NAT gateway is configured
 - Ensure SSH key is correct
 
+**Issue**: Database connection fails with ORA-12506 error
+- The Autonomous Database uses Access Control List (ACL) filtering for security
+- The NAT Gateway's public IP is automatically whitelisted to allow connections from backend instances
+- If you need to connect from additional IPs, update the `whitelisted_ips` variable in the database module
+- Verify the NAT Gateway is properly configured and has a public IP assigned
+
 ### Getting Help
 
 - [OCI Documentation](https://docs.oracle.com/en-us/iaas/Content/home.htm)

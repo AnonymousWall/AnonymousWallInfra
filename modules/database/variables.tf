@@ -68,3 +68,9 @@ variable "adb_license_model" {
   type        = string
   default     = "LICENSE_INCLUDED"
 }
+
+variable "whitelisted_ips" {
+  description = "List of IP addresses allowed to connect to the database"
+  type        = list(string)
+  default     = []
+}

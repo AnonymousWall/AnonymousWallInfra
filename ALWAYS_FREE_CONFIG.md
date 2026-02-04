@@ -25,6 +25,12 @@ The autonomous database module has been updated to use the Always Free tier:
 - Only public endpoints (no VCN integration)
 - Maximum 30 simultaneous database sessions
 - **mTLS (mutual TLS) is required** for secure connections
+- **Access Control List (ACL)** is automatically configured to allow connections from the NAT Gateway IP
+
+**Connection Requirements:**
+- The database is configured with `whitelisted_ips` to allow connections from compute instances through the NAT Gateway
+- The NAT Gateway's public IP is automatically whitelisted for database access
+- This prevents ORA-12506 errors (TNS:listener rejected connection based on service ACL filtering)
 
 ### 2. Compute Instances - RECOMMENDATIONS
 
