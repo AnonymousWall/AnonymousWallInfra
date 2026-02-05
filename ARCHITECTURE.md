@@ -64,15 +64,15 @@ This document describes the Oracle Cloud Infrastructure (OCI) architecture for t
 - Version: 19c (default)
 - License Model: LICENSE_INCLUDED
 - Network: Public endpoint with IP whitelisting
-- Connection: TLS (port 1521, no wallet required)
-- Wallet: Available but optional (mTLS disabled)
+- Connection: mTLS (port 1522, requires wallet)
+- Wallet: Required for secure mTLS connections
 
 **Features:**
 - Auto-scaling enabled
 - Automatic backups
 - IP whitelisting for secure access (NAT Gateway IP automatically whitelisted)
-- TLS connections supported (mTLS disabled for simpler connectivity)
-- No wallet configuration required for connections
+- mTLS connections required (wallet must be configured in application)
+- Wallet available via Terraform output
 - Always Free tier compatible
 
 ### 5. Load Balancer (modules/load_balancer)
