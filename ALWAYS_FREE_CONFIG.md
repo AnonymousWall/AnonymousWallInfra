@@ -9,7 +9,7 @@ The autonomous database module has been updated to use the Always Free tier:
 
 **Changes:**
 - Set `is_free_tier = true`
-- Set `is_mtls_connection_required = true` (required for Always Free public endpoints)
+- Set `is_mtls_connection_required = false` (allows TLS-only connections without wallet for easier setup)
 - Added automatic IP whitelisting for NAT Gateway to allow backend instance connections
 - Removed conflicting attributes that are not compatible with Always Free:
   - `cpu_core_count` (Always Free automatically gets 1 OCPU)
@@ -25,8 +25,9 @@ The autonomous database module has been updated to use the Always Free tier:
 - 20 GB storage per database
 - Only public endpoints (no VCN integration)
 - Maximum 30 simultaneous database sessions
-- **mTLS (mutual TLS) is required** for secure connections
+- **TLS connections** supported (mTLS disabled for simpler connectivity)
 - **IP whitelisting required**: Backend instances connect via NAT Gateway IP (automatically configured in CIDR notation with /32 suffix)
+- **Port 1521** for TLS connections (no wallet required)
 
 ### 2. Compute Instances - RECOMMENDATIONS
 
