@@ -28,6 +28,11 @@ output "nat_gateway_id" {
   value       = oci_core_nat_gateway.main.id
 }
 
+output "nat_gateway_public_ip" {
+  description = "Public IP of the NAT gateway"
+  value       = oci_core_nat_gateway.main.nat_ip
+}
+
 output "service_gateway_id" {
   description = "OCID of the service gateway"
   value       = oci_core_service_gateway.main.id

@@ -19,6 +19,11 @@ output "db_subnet_id" {
   value       = module.network.db_subnet_id
 }
 
+output "nat_gateway_public_ip" {
+  description = "Public IP of the NAT Gateway (whitelisted for database access)"
+  value       = module.network.nat_gateway_public_ip
+}
+
 # Compute Outputs
 output "instance_ids" {
   description = "OCIDs of the compute instances"

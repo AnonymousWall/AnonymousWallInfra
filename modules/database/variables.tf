@@ -68,3 +68,9 @@ variable "adb_license_model" {
   type        = string
   default     = "LICENSE_INCLUDED"
 }
+
+variable "whitelisted_ips" {
+  description = "List of whitelisted IPs/CIDR blocks for ADB access (required for Always Free tier)"
+  type        = list(string)
+  default     = []
+}
