@@ -119,6 +119,30 @@ Key outputs include:
 - `ssh_access_instructions`: Instructions for accessing backend instances
 - `adb_connection_strings`: Database connection strings (sensitive)
 
+## Testing Database Connection
+
+Before deploying your application, you can quickly test the database connection:
+
+**Quick Test**:
+```bash
+# SSH to a backend instance (via bastion)
+ssh -i ~/.ssh/your-key -J opc@<bastion-ip> opc@<backend-private-ip>
+
+# Run the provided test script
+python3 scripts/test_adb_connection.py
+```
+
+**Documentation**:
+- See [DATABASE_TESTING.md](DATABASE_TESTING.md) for comprehensive testing guide
+- See [scripts/README.md](scripts/README.md) for available testing utilities
+
+The testing guide includes:
+- ✅ Python test script (fastest method)
+- ✅ SQL*Plus connection test
+- ✅ Java JDBC test example
+- ✅ Troubleshooting steps
+- ✅ Connection verification checklist
+
 ## Module Structure
 
 ```
