@@ -44,14 +44,14 @@ bastion_memory_in_gbs = 1  # 1 GB RAM
 # - Public endpoint only (no VCN integration)
 adb_display_name   = "anonymouswall-adb"
 adb_db_name        = "ANONWALLDB"
-adb_admin_password = "ComplexPassword123!@#"
+adb_admin_password = "YOUR_STRONG_PASSWORD_HERE"  # Must be 12-30 chars with uppercase, lowercase, numbers, and special chars
 adb_db_version     = "19c"
 adb_db_workload    = "OLTP"
 
 # Testing Database Configuration (Same as above, but for testing)
 adb_testing_display_name   = "anonymouswall-adb-testing"
 adb_testing_db_name        = "ANONWALLTEST"
-adb_testing_admin_password = "ComplexPassword123!@#"  # Use a different password for testing
+adb_testing_admin_password = "YOUR_TESTING_PASSWORD_HERE"  # Use a different password for testing
 
 # The following database parameters are not used in Always Free tier but kept for backward compatibility
 adb_cpu_core_count          = 1
