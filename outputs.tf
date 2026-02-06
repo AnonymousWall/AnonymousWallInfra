@@ -74,6 +74,29 @@ output "adb_wallet_content" {
   sensitive   = true
 }
 
+# Testing Database Outputs
+output "adb_testing_id" {
+  description = "OCID of the Testing Autonomous Database"
+  value       = module.database_testing.adb_id
+}
+
+output "adb_testing_connection_strings" {
+  description = "Connection strings for the Testing Autonomous Database"
+  value       = module.database_testing.adb_connection_strings
+  sensitive   = true
+}
+
+output "adb_testing_service_console_url" {
+  description = "Service console URL for the Testing Autonomous Database"
+  value       = module.database_testing.adb_service_console_url
+}
+
+output "adb_testing_wallet_content" {
+  description = "Wallet content for the Testing Autonomous Database"
+  value       = module.database_testing.adb_wallet_content
+  sensitive   = true
+}
+
 # Load Balancer Outputs
 output "load_balancer_id" {
   description = "OCID of the load balancer"

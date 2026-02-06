@@ -48,6 +48,11 @@ adb_admin_password = "ComplexPassword123!@#"
 adb_db_version     = "19c"
 adb_db_workload    = "OLTP"
 
+# Testing Database Configuration (Same as above, but for testing)
+adb_testing_display_name   = "anonymouswall-adb-testing"
+adb_testing_db_name        = "ANONWALLTEST"
+adb_testing_admin_password = "ComplexPassword123!@#"  # Use a different password for testing
+
 # The following database parameters are not used in Always Free tier but kept for backward compatibility
 adb_cpu_core_count          = 1
 adb_data_storage_size_in_tbs = 1
