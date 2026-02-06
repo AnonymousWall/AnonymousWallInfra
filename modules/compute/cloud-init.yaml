@@ -39,11 +39,13 @@ write_files:
       Wants=network-online.target
 
       [Service]
-      Type=oneshot
-      RemainAfterExit=yes
+      Type=simple
+      User=opc
       WorkingDirectory=/opt/${app_name}
-      ExecStart=/usr/local/bin/podman-compose up -d
-      ExecStop=/usr/local/bin/podman-compose down
+      ExecStart=/usr/local/bin/podman-compose -f /opt/${app_name}/docker-compose.prod.yml up
+      ExecStop=/usr/local/bin/podman-compose -f /opt/${app_name}/docker-compose.prod.yml down
+      Restart=on-failure
+      RestartSec=10
 
       [Install]
       WantedBy=multi-user.target
