@@ -136,6 +136,25 @@ variable "adb_admin_password" {
   sensitive   = true
 }
 
+# Testing Database Variables
+variable "adb_testing_display_name" {
+  description = "Display name for the Testing Autonomous Database"
+  type        = string
+  default     = "anonymouswall-adb-testing"
+}
+
+variable "adb_testing_db_name" {
+  description = "Database name for the Testing Autonomous Database"
+  type        = string
+  default     = "ANONWALLTEST"
+}
+
+variable "adb_testing_admin_password" {
+  description = "Admin password for the Testing Autonomous Database"
+  type        = string
+  sensitive   = true
+}
+
 variable "adb_db_version" {
   description = "Database version for the ADB"
   type        = string

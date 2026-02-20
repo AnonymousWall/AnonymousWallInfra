@@ -59,6 +59,22 @@ module "database" {
   tags               = var.tags
 }
 
+# Testing Autonomous Database Module
+module "database_testing" {
+  source = "./modules/database"
+
+  compartment_ocid   = var.compartment_ocid
+  adb_display_name   = var.adb_testing_display_name
+  adb_db_name        = var.adb_testing_db_name
+  adb_admin_password = var.adb_testing_admin_password
+  adb_db_version     = var.adb_db_version
+  adb_db_workload    = var.adb_db_workload
+  whitelisted_ips    = ["${module.network.nat_gateway_public_ip}/32", "0.0.0.0/0"]
+  app_name           = var.app_name
+  environment        = var.environment
+  tags               = var.tags
+}
+
 # Bastion Module
 module "bastion" {
   source = "./modules/bastion"
