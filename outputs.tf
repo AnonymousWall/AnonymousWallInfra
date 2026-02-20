@@ -102,6 +102,28 @@ output "application_url" {
   value       = var.dns_zone_name != "" ? "https://${var.dns_record_domain != "" ? var.dns_record_domain : var.dns_zone_name}" : "http://${module.load_balancer.lb_ip_address}"
 }
 
+# Email Delivery Outputs
+output "email_domain_id" {
+  description = "OCID of the email domain"
+  value       = var.email_domain_name != "" ? module.email[0].email_domain_id : null
+}
+
+output "approved_sender_email" {
+  description = "Email address of the approved sender"
+  value       = var.email_domain_name != "" ? module.email[0].approved_sender_email : null
+}
+
+output "smtp_username" {
+  description = "SMTP username for the generated SMTP credential"
+  value       = var.email_domain_name != "" ? module.email[0].smtp_username : null
+}
+
+output "smtp_password" {
+  description = "SMTP password for the generated SMTP credential"
+  value       = var.email_domain_name != "" ? module.email[0].smtp_password : null
+  sensitive   = true
+}
+
 # SSH Access Instructions
 output "ssh_access_instructions" {
   description = "Instructions for SSH access to backend instances"

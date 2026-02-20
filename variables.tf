@@ -186,6 +186,31 @@ variable "lb_max_bandwidth_mbps" {
   default     = 10 # Always Free: 10 Mbps fixed (set higher for paid tier)
 }
 
+# Email Delivery Variables
+variable "email_domain_name" {
+  description = "The email domain name for OCI Email Delivery (e.g., mail.example.com)"
+  type        = string
+  default     = ""
+}
+
+variable "sender_email_address" {
+  description = "The approved sender email address (must belong to the email domain)"
+  type        = string
+  default     = ""
+}
+
+variable "smtp_user_ocid" {
+  description = "The OCID of the OCI user for whom the SMTP credential will be created"
+  type        = string
+  default     = ""
+}
+
+variable "email_admins_group" {
+  description = "Name of the OCI IAM group that manages email delivery resources"
+  type        = string
+  default     = "EmailAdmins"
+}
+
 # DNS Variables
 variable "dns_zone_name" {
   description = "DNS zone name"
