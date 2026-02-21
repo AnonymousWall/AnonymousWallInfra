@@ -28,11 +28,12 @@ runcmd:
   # Create app directory and logs with correct permissions
   - mkdir -p /opt/${app_name}
   - chown opc:opc /opt/${app_name}
-#  - mkdir -p /opt/${app_name}/logs
-#  - chmod 777 /opt/${app_name}/logs
+  # Enable linger for opc user to keep services running after SSH session ends
+  - loginctl enable-linger opc
 
   # Reload systemd to pick up the new service file
   - systemctl daemon-reload
+  - systemctl enable ${app_name}
 
 write_files:
   - path: /etc/systemd/system/${app_name}.service
@@ -50,10 +51,10 @@ write_files:
       ExecStartPre=-/usr/bin/podman rm -f ${app_name}-backend
       ExecStart=/usr/local/bin/podman-compose -f /opt/${app_name}/docker-compose.prod.yml up
       ExecStop=/usr/local/bin/podman-compose -f /opt/${app_name}/docker-compose.prod.yml down
-      Restart=always
-      RestartSec=10
-      StartLimitInterval=60
-      StartLimitBurst=3
+      Restart=on-failure
+      RestartSec=30
+      StartLimitInterval=300
+      StartLimitBurst=5
 
       [Install]
       WantedBy=multi-user.target
