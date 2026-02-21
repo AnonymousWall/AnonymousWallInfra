@@ -68,6 +68,13 @@ lb_max_bandwidth_mbps = 10  # Always Free maximum (set to 10 for Always Free, or
 dns_zone_name    = "" # e.g., "example.com"
 dns_record_domain = "" # e.g., "api.example.com" or leave empty to use zone_name
 
+# Object Storage / Admin Frontend Static Hosting
+# No additional variables needed - the object storage module uses existing
+# compartment_ocid, region, app_name, environment, and tags values above.
+# After terraform apply, the admin_frontend_url output will show the URL
+# to access the React admin frontend. Upload your build artifacts (build/)
+# to the bucket using the OCI CLI or Console.
+
 # General Configuration
 app_name    = "anonymouswall"
 environment = "prod"

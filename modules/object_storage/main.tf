@@ -1,0 +1,22 @@
+# Object Storage Module for React Admin Frontend Static Hosting
+
+# Get Object Storage Namespace
+data "oci_objectstorage_namespace" "main" {
+  compartment_id = var.compartment_ocid
+}
+
+# Object Storage Bucket for Admin Frontend Static Hosting
+resource "oci_objectstorage_bucket" "admin_frontend" {
+  compartment_id = var.compartment_ocid
+  name           = "${var.app_name}-${var.environment}-admin-frontend"
+  namespace      = data.oci_objectstorage_namespace.main.namespace
+
+  # Allow public read access so the React app assets can be served.
+  # WARNING: All objects uploaded to this bucket will be publicly accessible.
+  # Do NOT upload sensitive files, API keys, or environment config to this bucket.
+  access_type = "ObjectRead"
+
+  freeform_tags = merge(var.tags, {
+    Name = "${var.app_name}-${var.environment}-admin-frontend"
+  })
+}

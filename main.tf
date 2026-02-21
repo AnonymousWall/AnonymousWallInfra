@@ -106,6 +106,17 @@ module "load_balancer" {
   tags                  = var.tags
 }
 
+# Object Storage Module for React Admin Frontend Static Hosting
+module "object_storage" {
+  source = "./modules/object_storage"
+
+  compartment_ocid = var.compartment_ocid
+  region           = var.region
+  app_name         = var.app_name
+  environment      = var.environment
+  tags             = var.tags
+}
+
 # DNS Module (optional, only if dns_zone_name is provided)
 module "dns" {
   source = "./modules/dns"
