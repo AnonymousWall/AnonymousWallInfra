@@ -119,6 +119,22 @@ output "dns_nameservers" {
   value       = var.dns_zone_name != "" ? module.dns[0].nameservers : null
 }
 
+# Object Storage Outputs
+output "admin_frontend_bucket_name" {
+  description = "Name of the Object Storage bucket for admin frontend"
+  value       = module.object_storage.bucket_name
+}
+
+output "admin_frontend_namespace" {
+  description = "Object Storage namespace for admin frontend bucket"
+  value       = module.object_storage.namespace
+}
+
+output "admin_frontend_url" {
+  description = "URL for the React admin frontend static website"
+  value       = module.object_storage.static_website_url
+}
+
 # Application URL
 output "application_url" {
   description = "Application URL"
