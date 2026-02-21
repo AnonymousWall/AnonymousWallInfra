@@ -132,7 +132,7 @@ output "ssh_access_instructions" {
     To SSH into backend instances via the bastion host:
     
     Method 1: SSH with agent forwarding (recommended for manual use)
-       ssh -A -i <your-private-key> opc@${module.bastion.bastion_public_ip}
+       ssh -A -i ~/.ssh/oci_key opc@${module.bastion.bastion_public_ip}
        # Then from bastion: ssh opc@<backend-private-ip>
     
     Method 2: SSH ProxyJump (one command, best for automation)
