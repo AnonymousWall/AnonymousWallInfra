@@ -259,7 +259,7 @@ variable "sender_email_address" {
 }
 
 variable "smtp_user_ocid" {
-  description = "The OCID of the IAM user for whom the SMTP credential is created"
+  description = "OCID of the IAM user for whom the SMTP credential is created. Defaults to var.user_ocid (the provider/admin user) when left empty."
   type        = string
   default     = ""
 }

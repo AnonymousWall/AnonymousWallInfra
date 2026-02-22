@@ -125,7 +125,7 @@ module "email" {
   compartment_ocid       = var.compartment_ocid
   email_domain_name      = var.email_domain_name
   sender_email_address   = var.sender_email_address
-  smtp_user_ocid         = var.smtp_user_ocid
+  smtp_user_ocid         = var.smtp_user_ocid != "" ? var.smtp_user_ocid : var.user_ocid
   email_admin_group_name = var.email_admin_group_name
   app_name               = var.app_name
   environment          = var.environment

@@ -82,7 +82,7 @@ environment = "prod"
 # Email Delivery Configuration (optional — leave email_domain_name empty to skip)
 email_domain_name    = "" # e.g. "mail.example.com"  — must be verified via DNS in OCI Console
 sender_email_address = "" # e.g. "noreply@mail.example.com"
-smtp_user_ocid       = "" # OCID of the IAM user that will own the SMTP credential
+smtp_user_ocid       = "" # Leave empty to use the provider user (user_ocid) — set explicitly to use a different IAM user
 
 # Tags
 tags = {
