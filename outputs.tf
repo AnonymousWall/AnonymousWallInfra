@@ -135,6 +135,16 @@ output "admin_frontend_url" {
   value       = module.object_storage.static_website_url
 }
 
+output "media_bucket_name" {
+  description = "Name of the Object Storage bucket for media files"
+  value       = module.object_storage.media_bucket_name
+}
+
+output "media_bucket_url" {
+  description = "Base URL for the media bucket (publicly readable)"
+  value       = module.object_storage.media_bucket_url
+}
+
 # Email Delivery Outputs
 output "email_domain_id" {
   description = "OCID of the email domain"
