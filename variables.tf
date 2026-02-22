@@ -244,3 +244,34 @@ variable "tags" {
     ManagedBy   = "Terraform"
   }
 }
+
+# Email Delivery Variables
+variable "email_domain_name" {
+  description = "The email domain name for OCI Email Delivery (e.g. mail.example.com)"
+  type        = string
+  default     = ""
+}
+
+variable "sender_email_address" {
+  description = "The approved sender email address for OCI Email Delivery"
+  type        = string
+  default     = ""
+}
+
+variable "smtp_user_ocid" {
+  description = "OCID of the IAM user for whom the SMTP credential is created. Defaults to var.user_ocid (the provider/admin user) when left empty."
+  type        = string
+  default     = ""
+}
+
+variable "email_admin_group_name" {
+  description = "Name of the IAM group granted manage access to email-family resources"
+  type        = string
+  default     = "EmailAdmins"
+}
+
+variable "dkim_selector" {
+  description = "DKIM selector name (default: 'mail'). Used as the DNS CNAME subdomain prefix for DKIM verification."
+  type        = string
+  default     = "mail"
+}

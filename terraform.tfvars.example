@@ -79,6 +79,12 @@ dns_record_domain = "" # e.g., "api.example.com" or leave empty to use zone_name
 app_name    = "anonymouswall"
 environment = "prod"
 
+# Email Delivery Configuration (optional — leave email_domain_name empty to skip)
+email_domain_name    = "" # e.g. "mail.example.com"  — must be verified via DNS in OCI Console
+sender_email_address = "" # e.g. "noreply@mail.example.com"
+smtp_user_ocid       = "" # Leave empty to use the provider user (user_ocid) — set explicitly to use a different IAM user
+dkim_selector        = "mail" # DKIM selector; after apply add the output CNAME record to your DNS provider
+
 # Tags
 tags = {
   Application = "AnonymousWall"

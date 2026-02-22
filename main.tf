@@ -117,6 +117,22 @@ module "object_storage" {
   tags             = var.tags
 }
 
+# Email Delivery Module (optional, only if email_domain_name is provided)
+module "email" {
+  source = "./modules/email"
+  count  = var.email_domain_name != "" ? 1 : 0
+
+  compartment_ocid       = var.compartment_ocid
+  email_domain_name      = var.email_domain_name
+  sender_email_address   = var.sender_email_address
+  smtp_user_ocid         = var.smtp_user_ocid != "" ? var.smtp_user_ocid : var.user_ocid
+  email_admin_group_name = var.email_admin_group_name
+  dkim_selector          = var.dkim_selector
+  app_name               = var.app_name
+  environment          = var.environment
+  tags                 = var.tags
+}
+
 # DNS Module (optional, only if dns_zone_name is provided)
 module "dns" {
   source = "./modules/dns"
