@@ -135,6 +135,28 @@ output "admin_frontend_url" {
   value       = module.object_storage.static_website_url
 }
 
+# Email Delivery Outputs
+output "email_domain_id" {
+  description = "OCID of the email domain"
+  value       = var.email_domain_name != "" ? module.email[0].email_domain_id : null
+}
+
+output "approved_sender_email" {
+  description = "Approved sender email address"
+  value       = var.email_domain_name != "" ? module.email[0].approved_sender_email : null
+}
+
+output "smtp_username" {
+  description = "SMTP username for Email Delivery authentication"
+  value       = var.email_domain_name != "" ? module.email[0].smtp_username : null
+}
+
+output "smtp_password" {
+  description = "SMTP password for Email Delivery authentication (sensitive)"
+  value       = var.email_domain_name != "" ? module.email[0].smtp_password : null
+  sensitive   = true
+}
+
 # Application URL
 output "application_url" {
   description = "Application URL"
