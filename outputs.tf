@@ -157,6 +157,16 @@ output "smtp_password" {
   sensitive   = true
 }
 
+output "dkim_dns_subdomain_name" {
+  description = "DNS CNAME name to add to your DNS provider to complete DKIM verification"
+  value       = var.email_domain_name != "" ? module.email[0].dkim_dns_subdomain_name : null
+}
+
+output "dkim_dns_subdomain_value" {
+  description = "DNS CNAME value to add to your DNS provider to complete DKIM verification"
+  value       = var.email_domain_name != "" ? module.email[0].dkim_dns_subdomain_value : null
+}
+
 # Application URL
 output "application_url" {
   description = "Application URL"

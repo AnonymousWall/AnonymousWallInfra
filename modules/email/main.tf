@@ -7,6 +7,15 @@ resource "oci_email_email_domain" "email_domain" {
   freeform_tags  = var.tags
 }
 
+# DKIM signing key for the email domain
+# After apply, add the DNS CNAME record shown in dkim_dns_subdomain_name / dkim_dns_subdomain_value
+# to your DNS provider to complete domain verification.
+resource "oci_email_dkim" "dkim" {
+  email_domain_id = oci_email_email_domain.email_domain.id
+  name            = var.dkim_selector
+  freeform_tags   = var.tags
+}
+
 # Approved Sender
 # depends_on ensures the domain exists before the sender is registered
 resource "oci_email_sender" "approved_sender" {

@@ -23,3 +23,18 @@ output "email_policy_id" {
   description = "OCID of the email delivery IAM policy"
   value       = oci_identity_policy.email_policy.id
 }
+
+output "dkim_id" {
+  description = "OCID of the DKIM signing key"
+  value       = oci_email_dkim.dkim.id
+}
+
+output "dkim_dns_subdomain_name" {
+  description = "DNS CNAME name to add to your DNS provider to verify DKIM (e.g. mail._domainkey.example.com)"
+  value       = oci_email_dkim.dkim.dns_subdomain_name
+}
+
+output "dkim_dns_subdomain_value" {
+  description = "DNS CNAME value to add to your DNS provider to verify DKIM"
+  value       = oci_email_dkim.dkim.cname_record_value
+}

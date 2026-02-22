@@ -269,3 +269,9 @@ variable "email_admin_group_name" {
   type        = string
   default     = "EmailAdmins"
 }
+
+variable "dkim_selector" {
+  description = "DKIM selector name (default: 'mail'). Used as the DNS CNAME subdomain prefix for DKIM verification."
+  type        = string
+  default     = "mail"
+}

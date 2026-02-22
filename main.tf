@@ -127,6 +127,7 @@ module "email" {
   sender_email_address   = var.sender_email_address
   smtp_user_ocid         = var.smtp_user_ocid != "" ? var.smtp_user_ocid : var.user_ocid
   email_admin_group_name = var.email_admin_group_name
+  dkim_selector          = var.dkim_selector
   app_name               = var.app_name
   environment          = var.environment
   tags                 = var.tags
