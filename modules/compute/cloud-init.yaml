@@ -35,6 +35,9 @@ runcmd:
   - systemctl daemon-reload
   - systemctl enable ${app_name}
 
+  # Apply SSH keepalive config
+  - systemctl restart sshd
+
 write_files:
   - path: /etc/systemd/system/${app_name}.service
     content: |
@@ -59,5 +62,13 @@ write_files:
       [Install]
       WantedBy=multi-user.target
     permissions: '0644'
+
+  - path: /etc/ssh/sshd_config.d/99-keepalive.conf
+    owner: root:root
+    permissions: '0600'
+    content: |
+      ClientAliveInterval 30
+      ClientAliveCountMax 6
+      MaxStartups 50:30:200
 
 final_message: "The system is ready for ${app_name} backend deployment"

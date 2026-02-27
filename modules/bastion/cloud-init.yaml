@@ -1,0 +1,34 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+runcmd:
+  # Configure firewall
+  - systemctl start firewalld
+  - systemctl enable firewalld
+  - firewall-cmd --permanent --add-service=ssh
+  - firewall-cmd --reload
+
+  # Apply SSH keepalive config
+  - systemctl restart sshd
+
+write_files:
+  # Server-side — keeps your Mac → bastion connection alive
+  - path: /etc/ssh/sshd_config.d/99-keepalive.conf
+    owner: root:root
+    permissions: '0600'
+    content: |
+      ClientAliveInterval 30
+      ClientAliveCountMax 6
+      MaxStartups 50:30:200
+
+  # Client-side — keeps bastion → backend connections alive (agent forwarding handles auth)
+  - path: /etc/ssh/ssh_config.d/99-keepalive.conf
+    owner: root:root
+    permissions: '0644'
+    content: |
+      Host ${private_subnet_cidr}
+          ServerAliveInterval 30
+          ServerAliveCountMax 6
+
+final_message: "Bastion host is ready"

@@ -61,19 +61,3 @@ data "oci_core_vnic_attachments" "backend" {
 
   depends_on = [oci_core_instance.backend]
 }
-
-# Secondary VNICs (optional - for high-performance networking)
-resource "oci_core_vnic_attachment" "secondary" {
-  count        = var.instance_count
-  instance_id  = oci_core_instance.backend[count.index].id
-  display_name = "${var.app_name}-${var.environment}-backend-secondary-vnic-${count.index + 1}"
-
-  create_vnic_details {
-    subnet_id                 = var.subnet_id
-    display_name              = "${var.app_name}-${var.environment}-backend-secondary-vnic-${count.index + 1}"
-    assign_public_ip          = false
-    assign_private_dns_record = true
-    skip_source_dest_check    = false
-    freeform_tags             = var.tags
-  }
-}

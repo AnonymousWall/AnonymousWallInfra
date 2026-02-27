@@ -42,3 +42,8 @@ variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
 }
+
+variable "backend_private_ips" {
+  description = "Primary VNIC private IPs of backend instances"
+  type        = list(string)
+}

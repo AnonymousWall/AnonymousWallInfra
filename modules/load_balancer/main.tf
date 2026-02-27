@@ -38,35 +38,19 @@ resource "oci_load_balancer_backend_set" "main" {
     timeout_in_millis = 3000
     retries           = 3
   }
-
-  session_persistence_configuration {
-    cookie_name = "${var.app_name}_session"
-  }
 }
 
 # Backends (one for each compute instance)
 resource "oci_load_balancer_backend" "main" {
-  count            = length(var.backend_instance_ids)
+  count            = length(var.backend_private_ips)
   load_balancer_id = oci_load_balancer_load_balancer.main.id
   backendset_name  = oci_load_balancer_backend_set.main.name
-  ip_address       = data.oci_core_vnic.backend[count.index].private_ip_address
+  ip_address       = var.backend_private_ips[count.index]
   port             = 8080
   backup           = false
   drain            = false
   offline          = false
   weight           = 1
-}
-
-# Get VNIC details for each backend instance
-data "oci_core_vnic_attachments" "backend" {
-  count          = length(var.backend_instance_ids)
-  compartment_id = var.compartment_ocid
-  instance_id    = var.backend_instance_ids[count.index]
-}
-
-data "oci_core_vnic" "backend" {
-  count   = length(var.backend_instance_ids)
-  vnic_id = data.oci_core_vnic_attachments.backend[count.index].vnic_attachments[0].vnic_id
 }
 
 # Listener for HTTP
