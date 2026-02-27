@@ -51,3 +51,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "private_subnet_cidr" {
+  description = "CIDR of the private subnet where backend instances live"
+  type        = string
+}

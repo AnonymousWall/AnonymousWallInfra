@@ -89,6 +89,7 @@ module "bastion" {
   app_name              = var.app_name
   environment           = var.environment
   tags                  = var.tags
+  private_subnet_cidr   = var.private_subnet_cidr
 }
 
 # Load Balancer Module

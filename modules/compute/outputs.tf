@@ -20,8 +20,5 @@ output "primary_vnic_ids" {
 
 output "backend_private_ips" {
   description = "Primary VNIC private IPs for all backend instances"
-  value = [
-    for i in range(var.instance_count) :
-      data.oci_core_vnic_attachments.backend[i].vnic_attachments[0].private_ip
-  ]
+  value       = oci_core_instance.backend[*].private_ip
 }
