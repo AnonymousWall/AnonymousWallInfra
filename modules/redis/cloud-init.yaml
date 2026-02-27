@@ -15,29 +15,60 @@ runcmd:
   - firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="${private_subnet_cidr}" port port="6379" protocol="tcp" accept'
   - firewall-cmd --reload
 
-  # Create data directory for Redis persistence and secure config
+  # Create data directory for Redis persistence
   - mkdir -p /opt/redis/data
   - chown opc:opc /opt/redis/data
   - chmod 700 /opt/redis
 
-  # Enable linger before starting container so it survives reboots
+  # Enable linger before pulling/starting so the session persists across reboots
   - loginctl enable-linger opc
 
-  # Pull and run Redis container with Podman — password passed via config file, not CLI
+  # Pull Redis image
   - podman pull docker.io/redis:7-alpine
-  - podman run -d --name redis --restart=always -p 6379:6379 -v /opt/redis/data:/data -v /opt/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro redis:7-alpine redis-server /usr/local/etc/redis/redis.conf
+
+  # Enable and start the Redis systemd service
+  - systemctl daemon-reload
+  - systemctl enable redis
+  - systemctl start redis
 
   # Apply SSH keepalive config
   - systemctl restart sshd
 
 write_files:
   # Redis configuration — password stored in file rather than CLI arg to avoid exposure in ps listings
+  # Owned by opc so the Podman container (running as opc) can read it
   - path: /opt/redis/redis.conf
-    owner: root:root
+    owner: opc:opc
     permissions: '0600'
     content: |
       appendonly yes
       requirepass ${redis_password}
+
+  # Systemd unit — manages the Redis container lifecycle and ensures restart on reboot
+  - path: /etc/systemd/system/redis.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Redis pub/sub service
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      User=opc
+      ExecStartPre=-/usr/bin/podman rm -f redis
+      ExecStart=/usr/bin/podman run --name redis -p 6379:6379 \
+        -v /opt/redis/data:/data \
+        -v /opt/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro \
+        redis:7-alpine redis-server /usr/local/etc/redis/redis.conf
+      ExecStop=/usr/bin/podman stop redis
+      Restart=on-failure
+      RestartSec=30
+      StartLimitInterval=300
+      StartLimitBurst=5
+
+      [Install]
+      WantedBy=multi-user.target
 
   - path: /etc/ssh/sshd_config.d/99-keepalive.conf
     owner: root:root
