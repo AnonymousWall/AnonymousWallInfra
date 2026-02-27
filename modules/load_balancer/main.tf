@@ -38,10 +38,6 @@ resource "oci_load_balancer_backend_set" "main" {
     timeout_in_millis = 3000
     retries           = 3
   }
-
-  session_persistence_configuration {
-    cookie_name = "${var.app_name}_session"
-  }
 }
 
 # Backends (one for each compute instance)
