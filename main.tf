@@ -98,6 +98,7 @@ module "load_balancer" {
   compartment_ocid      = var.compartment_ocid
   subnet_ids            = [module.network.public_subnet_id]
   backend_instance_ids  = module.compute.instance_ids
+  backend_private_ips   = module.compute.backend_private_ips
   lb_shape              = var.lb_shape
   lb_min_bandwidth_mbps = var.lb_min_bandwidth_mbps
   lb_max_bandwidth_mbps = var.lb_max_bandwidth_mbps

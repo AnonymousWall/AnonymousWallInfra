@@ -17,3 +17,11 @@ output "primary_vnic_ids" {
   description = "OCIDs of the primary VNICs"
   value       = [for attachment in data.oci_core_vnic_attachments.backend : attachment.vnic_attachments[0].vnic_id]
 }
+
+output "backend_private_ips" {
+  description = "Primary VNIC private IPs for all backend instances"
+  value = [
+    for i in range(var.instance_count) :
+      data.oci_core_vnic_attachments.backend[i].vnic_attachments[0].private_ip
+  ]
+}
