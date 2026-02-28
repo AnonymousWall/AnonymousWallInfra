@@ -18,6 +18,16 @@ output "static_website_url" {
   value       = "https://objectstorage.${var.region}.oraclecloud.com/n/${data.oci_objectstorage_namespace.main.namespace}/b/${oci_objectstorage_bucket.admin_frontend.name}/o/index.html"
 }
 
+output "official_web_bucket_name" {
+  description = "Name of the Object Storage bucket for the official website"
+  value       = oci_objectstorage_bucket.official_web.name
+}
+
+output "official_web_bucket_url" {
+  description = "Base URL for the official website bucket (publicly readable)"
+  value       = "https://objectstorage.${var.region}.oraclecloud.com/n/${data.oci_objectstorage_namespace.main.namespace}/b/${oci_objectstorage_bucket.official_web.name}/o/index.html"
+}
+
 output "media_bucket_name" {
   description = "Name of the Object Storage bucket for media files"
   value       = oci_objectstorage_bucket.media.name

@@ -152,6 +152,16 @@ output "media_bucket_url" {
   value       = module.object_storage.media_bucket_url
 }
 
+output "official_web_bucket_name" {
+  description = "Name of the Object Storage bucket for the official website"
+  value       = module.object_storage.official_web_bucket_name
+}
+
+output "official_web_bucket_url" {
+  description = "Base URL for the official website bucket (publicly readable)"
+  value       = module.object_storage.official_web_bucket_url
+}
+
 # Email Delivery Outputs
 output "email_domain_id" {
   description = "OCID of the email domain"
