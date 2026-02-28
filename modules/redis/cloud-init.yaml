@@ -5,71 +5,14 @@ package_upgrade: true
 packages:
   - curl
 
-runcmd:
-  - dnf install -y podman
-
-  # Firewall — only allow Redis port from private subnet, never from public
-  - systemctl start firewalld
-  - systemctl enable firewalld
-  - firewall-cmd --permanent --add-service=ssh
-  - firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="${private_subnet_cidr}" port port="6379" protocol="tcp" accept'
-  - firewall-cmd --reload
-
-  # Create data directory for Redis persistence
+bootcmd:
   - mkdir -p /opt/redis/data
-  - chown opc:opc /opt/redis/data
-  - chmod 700 /opt/redis
-
-  # Enable linger before pulling/starting so the session persists across reboots
-  - loginctl enable-linger opc
-
-  # Pull Redis image
-  - podman pull docker.io/redis:7-alpine
-
-  # Enable and start the Redis systemd service
-  - systemctl daemon-reload
-  - systemctl enable redis
-  - systemctl start redis
-
-  # Apply SSH keepalive config
-  - systemctl restart sshd
+  - chown -R opc:opc /opt/redis
+  - chmod 755 /opt/redis
+  - chmod 755 /opt/redis/data
+  - chcon -R -t container_file_t /opt/redis
 
 write_files:
-  # Redis configuration — password stored in file rather than CLI arg to avoid exposure in ps listings
-  # Owned by opc so the Podman container (running as opc) can read it
-  - path: /opt/redis/redis.conf
-    owner: opc:opc
-    permissions: '0600'
-    content: |
-      appendonly yes
-      requirepass ${redis_password}
-
-  # Systemd unit — manages the Redis container lifecycle and ensures restart on reboot
-  - path: /etc/systemd/system/redis.service
-    permissions: '0644'
-    content: |
-      [Unit]
-      Description=Redis pub/sub service
-      After=network-online.target
-      Wants=network-online.target
-
-      [Service]
-      Type=simple
-      User=opc
-      ExecStartPre=-/usr/bin/podman rm -f redis
-      ExecStart=/usr/bin/podman run --name redis -p 6379:6379 \
-        -v /opt/redis/data:/data \
-        -v /opt/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro \
-        redis:7-alpine redis-server /usr/local/etc/redis/redis.conf
-      ExecStop=/usr/bin/podman stop redis
-      Restart=on-failure
-      RestartSec=30
-      StartLimitInterval=300
-      StartLimitBurst=5
-
-      [Install]
-      WantedBy=multi-user.target
-
   - path: /etc/ssh/sshd_config.d/99-keepalive.conf
     owner: root:root
     permissions: '0600'
@@ -77,5 +20,54 @@ write_files:
       ClientAliveInterval 30
       ClientAliveCountMax 6
       MaxStartups 50:30:200
+
+runcmd:
+  - dnf install -y podman
+
+  - sysctl vm.overcommit_memory=1
+  - echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
+
+  - systemctl start firewalld
+  - systemctl enable firewalld
+  - firewall-cmd --permanent --add-service=ssh
+  - firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="${private_subnet_cidr}" port port="6379" protocol="tcp" accept'
+  - firewall-cmd --reload
+
+  - loginctl enable-linger opc
+
+  - sudo -u opc podman pull docker.io/library/redis:7-alpine
+
+  # Re-apply after dnf install which can reset permissions set in bootcmd
+  - chown -R opc:opc /opt/redis/data
+  - chmod 755 /opt/redis/data
+  - chcon -R -t container_file_t /opt/redis/data
+
+  - |
+    cat > /etc/systemd/system/redis.service << 'UNIT'
+    [Unit]
+    Description=Redis pub/sub service
+    After=network-online.target
+    Wants=network-online.target
+
+    [Service]
+    Type=simple
+    User=opc
+    ExecStartPre=-/usr/bin/podman rm -f redis
+    ExecStart=/usr/bin/podman run --name redis --userns=keep-id -p 6379:6379 -v /opt/redis/data:/data:z docker.io/library/redis:7-alpine redis-server --appendonly yes --requirepass "${redis_password}"
+    ExecStop=/usr/bin/podman stop redis
+    Restart=on-failure
+    RestartSec=30
+    StartLimitInterval=300
+    StartLimitBurst=5
+
+    [Install]
+    WantedBy=multi-user.target
+    UNIT
+
+  - systemctl daemon-reload
+  - systemctl enable redis
+  - systemctl start redis
+
+  - systemctl restart sshd
 
 final_message: "Redis instance is ready for ${app_name}"
