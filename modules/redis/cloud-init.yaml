@@ -1,0 +1,73 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - curl
+
+bootcmd:
+  - mkdir -p /opt/redis/data
+  - chown -R opc:opc /opt/redis
+  - chmod 755 /opt/redis
+  - chmod 755 /opt/redis/data
+  - chcon -R -t container_file_t /opt/redis
+
+write_files:
+  - path: /etc/ssh/sshd_config.d/99-keepalive.conf
+    owner: root:root
+    permissions: '0600'
+    content: |
+      ClientAliveInterval 30
+      ClientAliveCountMax 6
+      MaxStartups 50:30:200
+
+runcmd:
+  - dnf install -y podman
+
+  - sysctl vm.overcommit_memory=1
+  - echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
+
+  - systemctl start firewalld
+  - systemctl enable firewalld
+  - firewall-cmd --permanent --add-service=ssh
+  - firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="${private_subnet_cidr}" port port="6379" protocol="tcp" accept'
+  - firewall-cmd --reload
+
+  - loginctl enable-linger opc
+
+  - sudo -u opc podman pull docker.io/library/redis:7-alpine
+
+  # Re-apply after dnf install which can reset permissions set in bootcmd
+  - chown -R opc:opc /opt/redis/data
+  - chmod 755 /opt/redis/data
+  - chcon -R -t container_file_t /opt/redis/data
+
+  - |
+    cat > /etc/systemd/system/redis.service << 'UNIT'
+    [Unit]
+    Description=Redis pub/sub service
+    After=network-online.target
+    Wants=network-online.target
+
+    [Service]
+    Type=simple
+    User=opc
+    ExecStartPre=-/usr/bin/podman rm -f redis
+    ExecStart=/usr/bin/podman run --name redis --userns=keep-id -p 6379:6379 -v /opt/redis/data:/data:z docker.io/library/redis:7-alpine redis-server --appendonly yes --requirepass "${redis_password}"
+    ExecStop=/usr/bin/podman stop redis
+    Restart=on-failure
+    RestartSec=30
+    StartLimitInterval=300
+    StartLimitBurst=5
+
+    [Install]
+    WantedBy=multi-user.target
+    UNIT
+
+  - systemctl daemon-reload
+  - systemctl enable redis
+  - systemctl start redis
+
+  - systemctl restart sshd
+
+final_message: "Redis instance is ready for ${app_name}"

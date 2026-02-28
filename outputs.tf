@@ -97,6 +97,13 @@ output "adb_testing_wallet_content" {
   sensitive   = true
 }
 
+# Redis Outputs
+output "redis_private_ip" {
+  description = "Private IP of Redis instance — use in backend application config"
+  value       = module.redis.private_ip
+  sensitive   = false
+}
+
 # Load Balancer Outputs
 output "load_balancer_id" {
   description = "OCID of the load balancer"

@@ -186,6 +186,31 @@ variable "adb_license_model" {
   default     = "LICENSE_INCLUDED"
 }
 
+# Redis Variables
+variable "redis_instance_shape" {
+  description = "Shape of the Redis compute instance"
+  type        = string
+  default     = "VM.Standard.A1.Flex"
+}
+
+variable "redis_ocpus" {
+  description = "Number of OCPUs for the Redis instance"
+  type        = number
+  default     = 1
+}
+
+variable "redis_memory_in_gbs" {
+  description = "Amount of memory in GBs for the Redis instance"
+  type        = number
+  default     = 6
+}
+
+variable "redis_password" {
+  description = "Redis AUTH password — store in terraform.tfvars (never commit)"
+  type        = string
+  sensitive   = true
+}
+
 # Load Balancer Variables
 variable "lb_shape" {
   description = "Shape of the load balancer"

@@ -1,0 +1,56 @@
+# Redis Module - Single Redis instance for pub/sub
+
+# Get the latest Oracle Linux image
+data "oci_core_images" "oracle_linux" {
+  compartment_id           = var.compartment_ocid
+  operating_system         = "Oracle Linux"
+  operating_system_version = "9"
+  shape                    = var.instance_shape
+  sort_by                  = "TIMECREATED"
+  sort_order               = "DESC"
+}
+
+# Redis Instance
+resource "oci_core_instance" "redis" {
+  availability_domain = var.availability_domain
+  compartment_id      = var.compartment_ocid
+  display_name        = "${var.app_name}-${var.environment}-redis"
+  shape               = var.instance_shape
+
+  shape_config {
+    ocpus         = var.instance_ocpus
+    memory_in_gbs = var.instance_memory_in_gbs
+  }
+
+  create_vnic_details {
+    subnet_id                 = var.subnet_id
+    display_name              = "${var.app_name}-${var.environment}-redis-vnic"
+    assign_public_ip          = false
+    assign_private_dns_record = true
+    hostname_label            = "${var.app_name}-redis"
+    freeform_tags             = var.tags
+  }
+
+  source_details {
+    source_type = "image"
+    source_id   = data.oci_core_images.oracle_linux.images[0].id
+  }
+
+  metadata = {
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = base64encode(templatefile("${path.module}/cloud-init.yaml", {
+      private_subnet_cidr = var.private_subnet_cidr
+      redis_password      = var.redis_password
+      app_name            = var.app_name
+    }))
+  }
+
+  freeform_tags = merge(var.tags, {
+    Name = "${var.app_name}-${var.environment}-redis"
+    Role = "Redis"
+  })
+
+  lifecycle {
+    ignore_changes = [source_details[0].source_id]
+  }
+}

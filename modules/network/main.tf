@@ -190,6 +190,18 @@ resource "oci_core_security_list" "private" {
     }
   }
 
+  # Allow backend instances to reach Redis (pub/sub)
+  ingress_security_rules {
+    protocol    = "6" # TCP
+    source      = var.private_subnet_cidr
+    stateless   = false
+    description = "Allow Redis pub/sub from backend instances"
+    tcp_options {
+      min = 6379
+      max = 6379
+    }
+  }
+
   # Allow all outbound
   egress_security_rules {
     protocol    = "all"

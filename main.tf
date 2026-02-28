@@ -43,6 +43,24 @@ module "compute" {
   tags                   = var.tags
 }
 
+# Redis Pub/Sub Module
+module "redis" {
+  source = "./modules/redis"
+
+  compartment_ocid       = var.compartment_ocid
+  availability_domain    = var.availability_domain
+  subnet_id              = module.network.private_subnet_id
+  instance_shape         = var.redis_instance_shape
+  instance_ocpus         = var.redis_ocpus
+  instance_memory_in_gbs = var.redis_memory_in_gbs
+  ssh_public_key         = var.ssh_public_key
+  app_name               = var.app_name
+  environment            = var.environment
+  private_subnet_cidr    = var.private_subnet_cidr
+  redis_password         = var.redis_password
+  tags                   = var.tags
+}
+
 # Autonomous Database Module
 module "database" {
   source = "./modules/database"
