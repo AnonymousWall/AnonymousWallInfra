@@ -21,6 +21,22 @@ resource "oci_objectstorage_bucket" "admin_frontend" {
   })
 }
 
+# Object Storage Bucket for Official Website Static Hosting
+resource "oci_objectstorage_bucket" "official_web" {
+  compartment_id = var.compartment_ocid
+  name           = "${var.app_name}-${var.environment}-official-web"
+  namespace      = data.oci_objectstorage_namespace.main.namespace
+
+  # Allow public read access so the official website assets can be served.
+  # WARNING: All objects uploaded to this bucket will be publicly accessible.
+  # Do NOT upload sensitive files, API keys, or environment config to this bucket.
+  access_type = "ObjectRead"
+
+  freeform_tags = merge(var.tags, {
+    Name = "${var.app_name}-${var.environment}-official-web"
+  })
+}
+
 # Object Storage Bucket for Media (images, etc.)
 resource "oci_objectstorage_bucket" "media" {
   compartment_id = var.compartment_ocid
