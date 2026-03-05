@@ -2,7 +2,7 @@
 
 # Dynamic Group for Compute Instances
 resource "oci_identity_dynamic_group" "compute_instances" {
-  compartment_id = var.compartment_ocid
+  compartment_id = var.tenancy_ocid
   description    = "Dynamic group for ${var.app_name} compute instances"
   matching_rule  = "All {instance.compartment.id = '${var.compartment_ocid}'}"
   name           = "${var.app_name}-${var.environment}-compute-dg"

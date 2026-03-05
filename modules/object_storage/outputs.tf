@@ -34,6 +34,6 @@ output "media_bucket_name" {
 }
 
 output "media_bucket_url" {
-  description = "Base URL for the media bucket (publicly readable)"
+  description = "Base URL for the media bucket (private — access requires authentication via Instance Principal)"
   value       = "https://objectstorage.${var.region}.oraclecloud.com/n/${data.oci_objectstorage_namespace.main.namespace}/b/${oci_objectstorage_bucket.media.name}/o"
 }

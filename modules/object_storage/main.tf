@@ -43,10 +43,9 @@ resource "oci_objectstorage_bucket" "media" {
   name           = "${var.app_name}-${var.environment}-media"
   namespace      = data.oci_objectstorage_namespace.main.namespace
 
-  # Allow public read access so media files (e.g. images) load directly in the app.
-  # WARNING: All objects uploaded to this bucket will be publicly accessible.
-  # Do NOT upload sensitive files, API keys, or environment config to this bucket.
-  access_type = "ObjectRead"
+  # Private bucket — objects are accessible only via authenticated requests (Instance Principal).
+  # The backend compute instance is granted manage objects via IAM policy.
+  access_type = "NoPublicAccess"
 
   freeform_tags = merge(var.tags, {
     Name = "${var.app_name}-${var.environment}-media"
