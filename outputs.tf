@@ -148,7 +148,7 @@ output "media_bucket_name" {
 }
 
 output "media_bucket_url" {
-  description = "Base URL for the media bucket (publicly readable)"
+  description = "Base URL for the media bucket (private — access requires authentication via Instance Principal)"
   value       = module.object_storage.media_bucket_url
 }
 

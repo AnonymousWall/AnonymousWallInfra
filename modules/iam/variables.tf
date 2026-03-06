@@ -1,3 +1,8 @@
+variable "tenancy_ocid" {
+  description = "The OCID of the tenancy (required for dynamic group — must be in tenancy root)"
+  type        = string
+}
+
 variable "compartment_ocid" {
   description = "The OCID of the compartment"
   type        = string

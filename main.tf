@@ -19,6 +19,7 @@ module "network" {
 module "iam" {
   source = "./modules/iam"
 
+  tenancy_ocid     = var.tenancy_ocid
   compartment_ocid = var.compartment_ocid
   app_name         = var.app_name
   environment      = var.environment
