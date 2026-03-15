@@ -17,6 +17,7 @@ resource "oci_identity_policy" "compute_object_storage" {
   statements = [
     "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to read buckets in compartment id ${var.compartment_ocid}",
     "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to manage objects in compartment id ${var.compartment_ocid}",
+    "Allow dynamic-group ${oci_identity_dynamic_group.compute_instances.name} to manage preauthenticated-requests in compartment id ${var.compartment_ocid}",
   ]
   freeform_tags = var.tags
 }
